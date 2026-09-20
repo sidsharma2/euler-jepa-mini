@@ -7,7 +7,7 @@ from pathlib import Path
 
 import numpy as np
 
-sys.path.insert(0, str(Path(__file__).parents[1]))
+sys.path.insert(0, str(Path(__file__).parents[1] / "scripts"))
 
 from physics_utils import forward_euler_step, safe_exact_step
 

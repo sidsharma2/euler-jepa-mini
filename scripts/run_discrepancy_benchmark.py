@@ -8,7 +8,7 @@ import torch
 from torch import nn
 from metrics import bootstrap_ci, r2, rmse, skill_vs_persistence
 
-HERE=Path(__file__).resolve().parent; SOURCE=HERE / "run_experiment.py"
+SCRIPT_DIR=Path(__file__).resolve().parent; HERE=SCRIPT_DIR.parent; SOURCE=SCRIPT_DIR / "run_experiment.py"
 RESULTS,REPORTS=HERE/'results',HERE/'reports'; DT=.01; H=10; K=.25; C0=.15
 def source():
     s=importlib.util.spec_from_file_location('euler_discrepancy_source',SOURCE); m=importlib.util.module_from_spec(s); sys.modules[s.name]=m; s.loader.exec_module(m); return m

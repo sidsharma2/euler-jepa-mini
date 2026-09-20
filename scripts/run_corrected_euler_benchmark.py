@@ -21,15 +21,16 @@ import sys
 from dataclasses import asdict
 from pathlib import Path
 
-os.environ.setdefault("MPLCONFIGDIR", str(Path(__file__).resolve().parent / "mplconfig"))
+os.environ.setdefault("MPLCONFIGDIR", str(Path(__file__).resolve().parents[1] / ".matplotlib"))
 
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
 
 
-HERE = Path(__file__).resolve().parent
-ORIGINAL_SCRIPT = HERE / "run_experiment.py"
+SCRIPT_DIR = Path(__file__).resolve().parent
+HERE = SCRIPT_DIR.parent
+ORIGINAL_SCRIPT = SCRIPT_DIR / "run_experiment.py"
 RESULTS = HERE / "results"
 FIGURES = HERE / "figures"
 REPORTS = HERE / "reports"

@@ -16,8 +16,9 @@ from pathlib import Path
 import numpy as np
 
 
-HERE = Path(__file__).resolve().parent
-ORIGINAL_SCRIPT = HERE / "run_experiment.py"
+SCRIPT_DIR = Path(__file__).resolve().parent
+HERE = SCRIPT_DIR.parent
+ORIGINAL_SCRIPT = SCRIPT_DIR / "run_experiment.py"
 RESULTS = HERE / "results"
 
 

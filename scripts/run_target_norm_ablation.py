@@ -15,8 +15,9 @@ import torch.nn.functional as F
 
 from metrics import bootstrap_ci, r2, skill_vs_persistence, rmse
 
-HERE = Path(__file__).resolve().parent
-SOURCE = HERE / "run_experiment.py"
+SCRIPT_DIR = Path(__file__).resolve().parent
+HERE = SCRIPT_DIR.parent
+SOURCE = SCRIPT_DIR / "run_experiment.py"
 RESULTS, REPORTS = HERE / "results", HERE / "reports"
 
 

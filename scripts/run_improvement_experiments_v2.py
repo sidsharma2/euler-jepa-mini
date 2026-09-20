@@ -19,8 +19,9 @@ from torch import nn
 from metrics import bootstrap_ci, r2, rmse, skill_vs_persistence
 
 
-HERE = Path(__file__).resolve().parent
-ORIGINAL_SCRIPT = HERE / "run_experiment.py"
+SCRIPT_DIR = Path(__file__).resolve().parent
+HERE = SCRIPT_DIR.parent
+ORIGINAL_SCRIPT = SCRIPT_DIR / "run_experiment.py"
 RESULTS = HERE / "results"
 REPORTS = HERE / "reports"
 DT_S = 0.01

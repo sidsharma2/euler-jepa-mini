@@ -4,7 +4,7 @@ import csv,json
 from pathlib import Path
 import numpy as np
 
-HERE=Path(__file__).resolve().parent; RESULTS=HERE/'results'; FIGURES=HERE/'figures'; REPORTS=HERE/'reports'
+HERE=Path(__file__).resolve().parents[1]; RESULTS=HERE/'results'; FIGURES=HERE/'figures'; REPORTS=HERE/'reports'
 MDOT=.8; R=.25; J=.02; KU=8.; K=.01; TAU=.15; DT=.01; UMIN=.45; UMAX=1.05; W0=400.; T=.4
 ALPHA=MDOT*R*KU/J; BETA=MDOT*R*K/J; GAMMA=TAU/J
 def endpoint(u):

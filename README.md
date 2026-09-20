@@ -30,14 +30,29 @@ engine-level predictive capability.
 
 ## Repository contents
 
-- `run_experiment.py` — original small synthetic benchmark and JEPA-style model.
-- `run_discrepancy_trajectory_training.py` — full-trajectory nonlinear-load experiment used by the paper.
-- `run_*.py` — baseline, discrepancy, ablation, sensitivity, and diagnostic experiments.
+- `scripts/` — executable experiments, plotting utilities, verification code, and small support modules; see [`scripts/README.md`](scripts/README.md).
 - `reports/main.tex` and `reports/main.pdf` — the paper source and compiled manuscript.
 - `figures/` — editable PGFPlots/TikZ figure sources and rendered figures.
 - `results/` — selected machine-readable results and derived tables.
 - `provenance/` — public provenance manifest and data-source notes.
 - `tests/` — lightweight physics tests.
+
+The repository is organized so that the landing page contains project
+documentation and research artifacts, while executable code is grouped under
+one folder:
+
+```text
+euler-jepa-mini/
+├── README.md                 # project overview and physical model
+├── DATA_SOURCES.md           # data boundary and software citations
+├── CITATION.cff              # citation metadata
+├── scripts/                  # experiments and verification entry points
+├── tests/                    # lightweight checks
+├── reports/                  # paper source and compiled manuscript
+├── figures/                  # editable and rendered paper figures
+├── results/                  # derived CSV, JSON, and plot outputs
+└── provenance/               # reproducibility and lineage metadata
+```
 
 ## Physical model
 
@@ -103,13 +118,13 @@ python -m pip install -r requirements.txt
 Run the original compact benchmark:
 
 ```powershell
-python run_experiment.py
+python scripts/run_experiment.py
 ```
 
 Run the main full-trajectory experiment:
 
 ```powershell
-python run_discrepancy_trajectory_training.py
+python scripts/run_discrepancy_trajectory_training.py
 ```
 
 Run the tests:

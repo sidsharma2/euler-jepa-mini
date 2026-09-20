@@ -23,10 +23,11 @@ import numpy as np
 import torch
 from torch import nn
 
-HERE = Path(__file__).resolve().parent
+SCRIPT_DIR = Path(__file__).resolve().parent
+HERE = SCRIPT_DIR.parent
 RESULTS = HERE / "results"
 REPORTS = HERE / "reports"
-BASELINE_SCRIPT = HERE / "run_discrepancy_trajectory_training.py"
+BASELINE_SCRIPT = SCRIPT_DIR / "run_discrepancy_trajectory_training.py"
 EPSILON = 0.5
 SEEDS = (7, 19, 31)
 ODE_WEIGHT = 0.05
@@ -36,7 +37,7 @@ ODE_SCALE_N_M = 1.0
 
 def load_baseline_module():
     """Load the existing Task 6 module without executing its main function."""
-    sys.path.insert(0, str(HERE))
+    sys.path.insert(0, str(SCRIPT_DIR))
     spec = importlib.util.spec_from_file_location("task6_baseline", BASELINE_SCRIPT)
     if spec is None or spec.loader is None:
         raise RuntimeError(f"Cannot load baseline script: {BASELINE_SCRIPT}")

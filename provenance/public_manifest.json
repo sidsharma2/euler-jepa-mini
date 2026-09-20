@@ -6,8 +6,8 @@
   "external_raw_datasets_used": [],
   "external_data_boundary": "The UIUC airfoil dataset belongs to a separate project and is not used in this manuscript or its experiments.",
   "generators": [
-    "run_experiment.py",
-    "run_discrepancy_trajectory_training.py"
+    "scripts/run_experiment.py",
+    "scripts/run_discrepancy_trajectory_training.py"
   ],
   "derived_artifacts": {
     "paper_source": "reports/main.tex",

@@ -8,10 +8,10 @@ is generated from the declared rotor equation by the repository scripts.
 
 The main generators are:
 
-- [`run_experiment.py`](run_experiment.py) for the compact corrected benchmark;
-- [`run_discrepancy_trajectory_training.py`](run_discrepancy_trajectory_training.py)
+- [`scripts/run_experiment.py`](scripts/run_experiment.py) for the compact corrected benchmark;
+- [`scripts/run_discrepancy_trajectory_training.py`](scripts/run_discrepancy_trajectory_training.py)
   for the full-trajectory nonlinear-load experiment;
-- the other `run_*.py` files for additive baselines, ablations, and diagnostics.
+- the other `scripts/run_*.py` files for additive baselines, ablations, and diagnostics.
 
 The synthetic data should therefore be interpreted as software-verification
 and method-development data. They do not represent measured compressor,

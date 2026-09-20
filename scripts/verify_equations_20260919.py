@@ -16,7 +16,7 @@ import numpy as np
 import torch
 
 
-HERE = Path(__file__).resolve().parent
+HERE = Path(__file__).resolve().parents[1]
 RESULTS = HERE / "results"
 REPORTS = HERE / "reports"
 

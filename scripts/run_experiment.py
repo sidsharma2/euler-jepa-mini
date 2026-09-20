@@ -21,7 +21,7 @@ import torch
 from torch import nn
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 RESULTS = ROOT / "results"
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

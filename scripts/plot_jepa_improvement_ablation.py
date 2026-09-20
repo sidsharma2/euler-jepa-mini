@@ -4,7 +4,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-os.environ.setdefault("MPLCONFIGDIR", str(Path(__file__).resolve().parent / ".matplotlib"))
+os.environ.setdefault("MPLCONFIGDIR", str(Path(__file__).resolve().parents[1] / ".matplotlib"))
 
 import matplotlib
 
@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-HERE = Path(__file__).resolve().parent
+HERE = Path(__file__).resolve().parents[1]
 CSV = HERE / "results" / "jepa_improvement_ablation.csv"
 OUTPUT = HERE / "results" / "figures" / "jepa_improvement_ablation"
 

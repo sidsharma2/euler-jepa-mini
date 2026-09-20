@@ -8,8 +8,9 @@ from pathlib import Path
 
 import numpy as np
 
-HERE = Path(__file__).resolve().parent
-sys.path.insert(0, str(HERE))
+SCRIPT_DIR = Path(__file__).resolve().parent
+HERE = SCRIPT_DIR.parent
+sys.path.insert(0, str(SCRIPT_DIR))
 import run_training_diagnostics as diagnostics  # noqa: E402
 
 
