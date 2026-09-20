@@ -41,23 +41,63 @@ engine-level predictive capability.
 
 ## Physical model
 
-The benchmark starts with Euler turbomachinery work and angular-momentum
-balance:
+The benchmark starts from Euler turbomachinery work and closes the model with
+an angular-momentum balance. The two physical steps are:
 
-\[
-\Delta h_0 = U\Delta C_\theta,\qquad U=r\omega,
-\]
+### 1. Euler work relation
 
-\[
-J\frac{d\omega}{dt}
-=\dot m r\left(k_u u-k_\omega\omega\right)-c_0-c_2\omega^2.
-\]
+The change in tangential velocity produces a specific stagnation-enthalpy
+change. The blade speed at the representative radius is $U=r\omega$:
 
-The data are generated synthetically from this declared model. The short
-corrected benchmark uses `k_omega` near `0.01` and a 10-step forecast. The
-separate full-trajectory nonlinear-load experiment uses `k_omega = 0.25`, a
-20-step context, and a 200-step forecast. The paper now keeps those protocols
-explicitly separate.
+$$
+\Delta h_0 = U\,\Delta C_\theta,
+\qquad
+U = r\omega.
+$$
+
+### 2. Rotor angular-momentum balance
+
+The corresponding Euler torque changes the rotor angular momentum:
+
+$$
+J\,\frac{d\omega}{dt}
+= \tau_{\mathrm{Euler}} - \tau_{\mathrm{load}}
+= \dot{m}\,r\,\Delta C_\theta
+  - c_0 - c_2\omega^2.
+$$
+
+The benchmark uses the simple closure
+
+$$
+\Delta C_\theta = k_u u - k_\omega\omega,
+$$
+
+so the complete scalar state equation is
+
+$$
+\boxed{
+J\,\frac{d\omega}{dt}
+= \dot{m}\,r\left(k_u u-k_\omega\omega\right)
+  - c_0 - c_2\omega^2
+}
+$$
+
+Here, $\omega$ is rotor angular speed, $J$ is rotational inertia, $\dot{m}$
+is mass flow rate, $r$ is representative radius, $u$ is a dimensionless
+control input, $k_u$ is the control-to-swirl gain, and $k_\omega$ is the
+speed-feedback coefficient. The constants $c_0$ and $c_2$ represent a
+constant load torque and a quadratic speed-dependent load, respectively.
+
+The data are generated synthetically from this declared model. The two paper
+experiments use different feedback regimes and should not be conflated:
+
+| Protocol | $k_\omega$ | Context | Forecast | Purpose |
+| --- | ---: | ---: | ---: | --- |
+| Corrected short horizon | $0.01$ nominal | — | 10 steps / 0.1 s | Analytical benchmark and endpoint audit |
+| Full trajectory with nonlinear load | $0.25$ | 20 steps | 200 steps / 2 s | JEPA, GRU, residual, and sensitivity comparison |
+
+The paper keeps these protocols explicitly separate because they have different
+time scales and different scientific questions.
 
 ## Reproduce the core experiment
 
