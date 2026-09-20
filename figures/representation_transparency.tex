@@ -1,0 +1,16 @@
+\begin{tikzpicture}[font=\footnotesize, node distance=7mm and 9mm,
+  box/.style={draw=black, rounded corners=1pt, fill=gray!6, minimum width=28mm, minimum height=11mm, align=center},
+  arrow/.style={-{Latex}, thick, draw=black}, dashedarrow/.style={-{Latex}, thick, dashed, draw=black}]
+  \node[box] (context) {causal context\\$x_{0:19}$};
+  \node[box, right=of context] (enc) {trainable context\\encoder $E_c$};
+  \node[box, right=of enc] (pred) {predictor/head\\$P,h$};
+  \node[box, right=of pred] (diag) {decoded forecast\\and residual tests};
+  \node[box, below=of context] (future) {future target\\$y_{20:219}$\\[-1pt]{\scriptsize training only}};
+  \node[box, right=of future] (target) {EMA target\\$E_y$\\[-1pt]{\scriptsize no gradient}};
+  \draw[arrow] (context)--(enc)--(pred)--(diag);
+  \draw[dashedarrow] (future)--(target);
+  \draw[dashedarrow] (target)--(pred);
+  \draw[dashedarrow] (enc.south) to[bend right=25] (target.north);
+  \node[below=8mm of target, align=left, font=\scriptsize] {dashed arrows: training-only target and latent paths; EMA updates the target encoder};
+  \node[below=12mm of diag, align=center, text width=112mm, font=\scriptsize] {engineering checks: trajectory RMSE $\bullet$ ODE residual $\bullet$ horizon stability $\bullet$ bootstrap intervals $\bullet$ control sensitivity};
+\end{tikzpicture}

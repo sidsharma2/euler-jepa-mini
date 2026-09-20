@@ -1,0 +1,27 @@
+{
+  "benchmark": "corrected_open_loop_constant_control",
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "train_sequences": 120,
+  "test_sequences": 30,
+  "train_windows": 1080,
+  "test_windows": 270,
+  "random_seeds": {
+    "data_train": 7,
+    "data_test": 19,
+    "jepa": 7
+  },
+  "control_protocol": "one constant control per sequence; future control is therefore known from the observed context",
+  "jepa_final_loss": 1.5767394870636053e-05,
+  "ml_probe_rmse_rad_s": 27.89946937561035,
+  "nominal_analytical_rmse_rad_s": 0.4606882160001016,
+  "oracle_analytical_rmse_rad_s": 3.191925584497985e-05,
+  "max_exact_vs_forward_euler_error_rad_s": 0.002451307689227633,
+  "equations": [
+    "J*domega/dt = mdot*r*delta_Ctheta - tau_load",
+    "delta_Ctheta = k_u*u - k_omega*omega",
+    "delta_h0 = U*delta_Ctheta",
+    "U = r*omega"
+  ],
+  "interpretation": "The corrected task is well-posed. The oracle isolates parameter mismatch, while the nominal baseline tests robustness to parameter variation. Neither result is experimental validation."
+}

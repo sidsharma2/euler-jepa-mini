@@ -1,0 +1,38 @@
+__pycache__/
+*.py[cod]
+.venv/
+.matplotlib/
+
+# LaTeX build products
+reports/*.aux
+reports/*.bbl
+reports/*.blg
+reports/*.log
+reports/*.out
+reports/*.synctex.gz
+
+# Keep the public repository focused on the manuscript and its public audit.
+reports/*
+!reports/main.tex
+!reports/main.pdf
+!reports/references.bib
+!reports/math_verification_20260919.md
+
+# Local/archive artifacts and machine-specific provenance
+figures/archive/
+figures/*.aux
+figures/*.log
+figures/*_compile.log
+reports/archive/
+provenance/*.json
+!provenance/public_manifest.json
+results/*.json
+!results/corrected_metrics.json
+!results/discrepancy_benchmark.json
+!results/math_verification_20260919.json
+
+# Local editor/system files
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

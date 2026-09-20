@@ -1,0 +1,41 @@
+{
+  "project": "euler-jepa-mini",
+  "manifest_version": "1.0",
+  "publication_date": "2026-09-19",
+  "data_classification": "synthetic",
+  "external_raw_datasets_used": [],
+  "external_data_boundary": "The UIUC airfoil dataset belongs to a separate project and is not used in this manuscript or its experiments.",
+  "generators": [
+    "run_experiment.py",
+    "run_discrepancy_trajectory_training.py"
+  ],
+  "derived_artifacts": {
+    "paper_source": "reports/main.tex",
+    "paper_pdf": "reports/main.pdf",
+    "figures": "figures/",
+    "results": "results/"
+  },
+  "physics": {
+    "equations": [
+      "Delta h_0 = U Delta C_theta",
+      "U = r omega",
+      "J d omega/dt = mdot r (k_u u - k_omega omega) - c_0 - c_2 omega^2"
+    ],
+    "units": "SI internally; control is dimensionless; angular speed is rad/s"
+  },
+  "reproducibility": {
+    "random_seeds_recorded": true,
+    "cuda_optional": true,
+    "environment_files": [
+      "requirements.txt",
+      "requirements.lock.txt"
+    ]
+  },
+  "limitations": [
+    "Synthetic trajectories only",
+    "No experimental validation",
+    "No UIUC data in this project",
+    "The JEPA-style model is a scalar research translation, not a reproduction of image or video JEPA",
+    "The project is ongoing"
+  ]
+}

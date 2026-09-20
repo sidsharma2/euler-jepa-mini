@@ -1,0 +1,17 @@
+\begin{tikzpicture}[font=\footnotesize, node distance=8mm and 10mm,
+  state/.style={draw=black, rounded corners=1pt, fill=gray!6, minimum width=25mm, minimum height=12mm, align=center},
+  arrow/.style={-{Latex}, thick, draw=black}]
+  \node[state] (fuel) {fuel/control\\$\delta\dot m_f$};
+  \node[state, right=of fuel] (comb) {combustor storage\\$\delta p_3^*,\delta T_3^*$};
+  \node[state, right=of comb] (turb) {turbine work\\$\delta P_T$};
+  \node[state, right=of turb] (rotor) {rotor storage\\$\delta n$};
+  \node[state, fill=gray!14, below=11mm of rotor] (out) {measured output\\$y=\delta n$};
+  \draw[arrow] (fuel)--(comb);
+  \draw[arrow] (comb)--(turb);
+  \draw[arrow] (turb)--(rotor);
+  \draw[arrow] (rotor)--(out);
+  \draw[arrow] (rotor.south) .. controls +(0,-16mm) and +(0,-16mm) .. node[below=1pt]{feedback through maps/load} (comb.south);
+  \draw[draw=black, dashed, rounded corners] ([xshift=-5mm,yshift=5mm]comb.north west) rectangle ([xshift=5mm,yshift=-5mm]rotor.south east);
+  \node[above=6mm of turb, align=center] {$\dot{x}=Ax+B\delta\dot m_f$};
+  \node[below=8mm of out, align=center] {$x=[\delta n,\delta p_3^*,\delta T_3^*]^T$\\$C=[1\;0\;0]$\\\scriptsize only rotor speed is directly observed};
+\end{tikzpicture}

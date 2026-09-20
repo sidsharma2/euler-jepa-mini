@@ -1,0 +1,32 @@
+\pgfplotsset{compat=1.18}
+\begin{tikzpicture}
+\begin{axis}[
+  width=\columnwidth,
+  height=0.92\columnwidth,
+  xlabel={True $\omega$ (\si{\radian\per\second})},
+  ylabel={Predicted $\omega$ (\si{\radian\per\second})},
+  legend style={draw=none, font=\scriptsize, at={(0.5,1.10)}, anchor=south, legend columns=2, /tikz/every even column/.append style={column sep=4pt}},
+  xmin=340, xmax=530,
+  ymin=340, ymax=530,
+  axis equal image,
+  tick align=inside,
+  minor tick num=1,
+  grid=none,
+]
+  \addplot[black!55, dashed, no marks, domain=340:530] {x};
+  \addlegendentry{exact prediction}
+  % Numeric values are read from the reproducible CSV output.
+  \addplot+[only marks, mark=o, mark size=1.1pt, black]
+    table [x=true_omega_rad_s, y=jepa_probe_omega_rad_s, col sep=comma]
+    {../results/corrected_predictions.csv};
+  \addlegendentry{JEPA + probe}
+  \addplot+[only marks, mark=square, mark size=1.1pt, black]
+    table [x=true_omega_rad_s, y=nominal_analytical_omega_rad_s, col sep=comma]
+    {../results/corrected_predictions.csv};
+  \addlegendentry{Nominal analytical}
+  \addplot+[only marks, mark=diamond*, black]
+    table [x=true_omega_rad_s, y=oracle_analytical_omega_rad_s, col sep=comma]
+    {../results/corrected_predictions.csv};
+  \addlegendentry{True-parameter oracle}
+\end{axis}
+\end{tikzpicture}

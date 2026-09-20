@@ -1,0 +1,15 @@
+\begin{tikzpicture}[font=\footnotesize, node distance=8mm and 10mm,
+  block/.style={draw=black, rounded corners=1pt, fill=gray!6, minimum width=29mm, minimum height=12mm, align=center},
+  arrow/.style={-{Latex}, thick, draw=black}]
+  \node[block] (control) {Actuator input\\$u(t)$};
+  \node[block, right=of control] (flow) {Flow/swirl closure\\$\Delta C_\theta=k_u u-k_\omega\omega$};
+  \node[block, right=of flow] (euler) {Euler work\\$\Delta h_0=U\Delta C_\theta$};
+  \node[block, right=of euler] (shaft) {Shaft torque\\$\tau_E=\dot m r\Delta C_\theta$};
+  \node[block, right=of shaft] (rotor) {Stored angular momentum\\$J\dot\omega=\tau_E-\tau_L$};
+  \draw[arrow] (control)--(flow);
+  \draw[arrow] (flow)--(euler);
+  \draw[arrow] (euler)--(shaft);
+  \draw[arrow] (shaft)--(rotor);
+  \draw[arrow] (rotor.south) .. controls +(0,-11mm) and +(0,-11mm) .. node[below=1pt]{measured feedback $\omega$} (flow.south);
+  \node[below=14mm of euler, align=center, font=\scriptsize] {known benchmark parameters: $\dot m$, $r$, $J$, and load torque\\model inputs: sampled $(\omega,u)$ history};
+\end{tikzpicture}

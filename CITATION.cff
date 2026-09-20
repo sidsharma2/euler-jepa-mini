@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+title: "Euler-JEPA mini"
+message: "If you use this repository, please cite it and the accompanying paper."
+type: software
+authors:
+  - family-names: Sharma
+    given-names: Siddharth
+repository-code: "https://github.com/sidsharma2/euler-jepa-mini"
+abstract: >-
+  Physics-grounded research software for auditing a small JEPA-style latent
+  predictor on a synthetic rotor-dynamics benchmark.
+keywords:
+  - physics-informed machine learning
+  - joint-embedding predictive architecture
+  - rotor dynamics
+  - turbomachinery
+  - system identification
+license: NOASSERTION
+version: 0.1.0
+date-released: 2026-09-19

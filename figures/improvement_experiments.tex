@@ -1,0 +1,27 @@
+\documentclass[border=4pt]{standalone}
+\usepackage{pgfplots}
+\usepackage{siunitx}
+\usetikzlibrary{patterns}
+\pgfplotsset{compat=1.18}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[
+  width=15cm,
+  height=7.5cm,
+  ybar,
+  bar width=8pt,
+  ylabel={Endpoint RMSE (\si{\radian\per\second})},
+  xtick=data,
+  xticklabels={Context,Predicted latent,Action conditioned,Direct endpoint,Linear residual,MLP residual,Nominal,Oracle},
+  x tick label style={rotate=38,anchor=east,font=\scriptsize},
+  ymin=0,
+  tick align=inside,
+  minor tick num=1,
+  grid=none,
+]
+  \addplot+[draw=black,fill=white,pattern=north east lines]
+    table [x expr=\coordindex,y=mean_rmse_rad_s,y error=std_rmse_rad_s,col sep=comma]
+    {../results/improvement_summary.csv};
+\end{axis}
+\end{tikzpicture}
+\end{document}

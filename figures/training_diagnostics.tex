@@ -1,0 +1,59 @@
+\documentclass[border=4pt]{standalone}
+\usepackage{pgfplots}
+\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=1.18}
+\begin{document}
+\begin{tikzpicture}
+\begin{groupplot}[
+  group style={group size=2 by 1, horizontal sep=1.2cm},
+  width=7.2cm,
+  height=5.5cm,
+  xlabel={Epoch},
+  tick align=inside,
+  minor tick num=1,
+  grid=none,
+  legend style={draw=none,font=\scriptsize},
+]
+\nextgroupplot[
+  ymode=log,
+  ylabel={Latent prediction loss},
+]
+  \addplot+[black,solid,mark=none]
+    table [x=epoch,y=mean_train_prediction_loss,col sep=comma]
+    {../results/training_trend_prediction_only.csv};
+  \addlegendentry{Train, prediction only}
+  \addplot+[black,dashed,mark=none]
+    table [x=epoch,y=mean_test_prediction_loss,col sep=comma]
+    {../results/training_trend_prediction_only.csv};
+  \addlegendentry{Holdout, prediction only}
+  \addplot+[black,solid,mark=none]
+    table [x=epoch,y=mean_train_prediction_loss,col sep=comma]
+    {../results/training_trend_prediction_plus_vc.csv};
+  \addlegendentry{Train, +VC}
+  \addplot+[black,dashed,mark=none]
+    table [x=epoch,y=mean_test_prediction_loss,col sep=comma]
+    {../results/training_trend_prediction_plus_vc.csv};
+  \addlegendentry{Holdout, +VC}
+\nextgroupplot[
+  ylabel={Embedding diagnostic},
+  legend to name=traininglegend,
+]
+  \addplot+[black,solid,mark=none]
+    table [x=epoch,y=mean_embedding_std,col sep=comma]
+    {../results/training_trend_prediction_only.csv};
+  \addlegendentry{Embedding std, prediction only}
+  \addplot+[black,dashed,mark=none]
+    table [x=epoch,y=mean_embedding_std,col sep=comma]
+    {../results/training_trend_prediction_plus_vc.csv};
+  \addlegendentry{Embedding std, +VC}
+  \addplot+[black,dotted,mark=none]
+    table [x=epoch,y=mean_effective_rank,col sep=comma]
+    {../results/training_trend_prediction_only.csv};
+  \addlegendentry{Effective rank, prediction only}
+  \addplot+[black,dashdotted,mark=none]
+    table [x=epoch,y=mean_effective_rank,col sep=comma]
+    {../results/training_trend_prediction_plus_vc.csv};
+  \addlegendentry{Effective rank, +VC}
+\end{groupplot}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,405 @@
+{
+  "experiment": "nonlinear_speed_dependent_load_discrepancy",
+  "truth": "J*w_dot=mdot*r*(ku*u-k*w)-(c0+c2*w^2)",
+  "epsilon_values": [
+    0,
+    0.02,
+    0.05,
+    0.1,
+    0.2,
+    0.5
+  ],
+  "rows": [
+    {
+      "epsilon": 0,
+      "c2_N_m_s2": 0.0,
+      "method": "nominal_physics",
+      "endpoint_rmse_rad_s": 58.26037925566056,
+      "endpoint_r2": -0.8406075487330649,
+      "skill_vs_persistence": -69.25023956313674,
+      "rmse_ci95_low_rad_s": 56.456226596963155,
+      "rmse_ci95_high_rad_s": 60.07362558720219
+    },
+    {
+      "epsilon": 0,
+      "c2_N_m_s2": 0.0,
+      "method": "calibrated_physics",
+      "endpoint_rmse_rad_s": 5.167193563695416e-05,
+      "endpoint_r2": 0.9999999999985522,
+      "skill_vs_persistence": 0.99999999994474,
+      "rmse_ci95_low_rad_s": 4.7848418610447006e-05,
+      "rmse_ci95_high_rad_s": 5.526222366820314e-05
+    },
+    {
+      "epsilon": 0,
+      "c2_N_m_s2": 0.0,
+      "method": "ols_residual_on_calibrated",
+      "endpoint_rmse_rad_s": 4.186790614414955e-05,
+      "endpoint_r2": 0.9999999999990494,
+      "skill_vs_persistence": 0.9999999999637204,
+      "rmse_ci95_low_rad_s": 3.960678738707109e-05,
+      "rmse_ci95_high_rad_s": 4.393117443796927e-05
+    },
+    {
+      "epsilon": 0,
+      "c2_N_m_s2": 0.0,
+      "method": "gru_residual",
+      "endpoint_rmse_rad_s": 0.0006606624318492115,
+      "endpoint_r2": 0.9999999997633133,
+      "skill_vs_persistence": 0.9999999909664091,
+      "rmse_ci95_low_rad_s": 0.0005262065075250322,
+      "rmse_ci95_high_rad_s": 0.0007875871013808233
+    },
+    {
+      "epsilon": 0,
+      "c2_N_m_s2": 0.0,
+      "method": "jepa_residual",
+      "endpoint_rmse_rad_s": 0.0020850821691151874,
+      "endpoint_r2": 0.9999999976424498,
+      "skill_vs_persistence": 0.9999999100196779,
+      "rmse_ci95_low_rad_s": 0.0019226148547730024,
+      "rmse_ci95_high_rad_s": 0.0022589899041899376
+    },
+    {
+      "epsilon": 0,
+      "c2_N_m_s2": 0.0,
+      "method": "rk4_oracle",
+      "endpoint_rmse_rad_s": 1.5448311501724495e-05,
+      "endpoint_r2": 0.9999999999998705,
+      "skill_vs_persistence": 0.9999999999950607,
+      "rmse_ci95_low_rad_s": 1.454603181643208e-05,
+      "rmse_ci95_high_rad_s": 1.629978105273955e-05
+    },
+    {
+      "epsilon": 0.02,
+      "c2_N_m_s2": 1.913265306122449e-08,
+      "method": "nominal_physics",
+      "endpoint_rmse_rad_s": 58.257717532722864,
+      "endpoint_r2": -0.8402714002755829,
+      "skill_vs_persistence": -69.22932003365234,
+      "rmse_ci95_low_rad_s": 56.45366063246443,
+      "rmse_ci95_high_rad_s": 60.07082142636468
+    },
+    {
+      "epsilon": 0.02,
+      "c2_N_m_s2": 1.913265306122449e-08,
+      "method": "calibrated_physics",
+      "endpoint_rmse_rad_s": 5.738904648100679e-05,
+      "endpoint_r2": 0.9999999999982142,
+      "skill_vs_persistence": 0.9999999999318494,
+      "rmse_ci95_low_rad_s": 5.378718582400965e-05,
+      "rmse_ci95_high_rad_s": 6.108355885728061e-05
+    },
+    {
+      "epsilon": 0.02,
+      "c2_N_m_s2": 1.913265306122449e-08,
+      "method": "ols_residual_on_calibrated",
+      "endpoint_rmse_rad_s": 4.7649539684093954e-05,
+      "endpoint_r2": 0.9999999999987689,
+      "skill_vs_persistence": 0.9999999999530182,
+      "rmse_ci95_low_rad_s": 4.4577423975390166e-05,
+      "rmse_ci95_high_rad_s": 5.072665119304569e-05
+    },
+    {
+      "epsilon": 0.02,
+      "c2_N_m_s2": 1.913265306122449e-08,
+      "method": "gru_residual",
+      "endpoint_rmse_rad_s": 0.0008082080229366049,
+      "endpoint_r2": 0.9999999996458223,
+      "skill_vs_persistence": 0.9999999864836993,
+      "rmse_ci95_low_rad_s": 0.0006850622583208017,
+      "rmse_ci95_high_rad_s": 0.0009251953827358337
+    },
+    {
+      "epsilon": 0.02,
+      "c2_N_m_s2": 1.913265306122449e-08,
+      "method": "jepa_residual",
+      "endpoint_rmse_rad_s": 0.002087836298181758,
+      "endpoint_r2": 0.9999999976364334,
+      "skill_vs_persistence": 0.9999999098004397,
+      "rmse_ci95_low_rad_s": 0.0019248226138782838,
+      "rmse_ci95_high_rad_s": 0.0022612940234286068
+    },
+    {
+      "epsilon": 0.02,
+      "c2_N_m_s2": 1.913265306122449e-08,
+      "method": "rk4_oracle",
+      "endpoint_rmse_rad_s": 1.6934549574186683e-05,
+      "endpoint_r2": 0.9999999999998445,
+      "skill_vs_persistence": 0.9999999999940659,
+      "rmse_ci95_low_rad_s": 1.551263099832469e-05,
+      "rmse_ci95_high_rad_s": 1.8286296929066818e-05
+    },
+    {
+      "epsilon": 0.05,
+      "c2_N_m_s2": 4.934210526315789e-08,
+      "method": "nominal_physics",
+      "endpoint_rmse_rad_s": 58.253518454882425,
+      "endpoint_r2": -0.8397411400333872,
+      "skill_vs_persistence": -69.19639598709163,
+      "rmse_ci95_low_rad_s": 56.449614936193456,
+      "rmse_ci95_high_rad_s": 60.06639676196726
+    },
+    {
+      "epsilon": 0.05,
+      "c2_N_m_s2": 4.934210526315789e-08,
+      "method": "calibrated_physics",
+      "endpoint_rmse_rad_s": 5.319872418528508e-05,
+      "endpoint_r2": 0.9999999999984657,
+      "skill_vs_persistence": 0.9999999999414573,
+      "rmse_ci95_low_rad_s": 4.910275175510404e-05,
+      "rmse_ci95_high_rad_s": 5.7476351719688676e-05
+    },
+    {
+      "epsilon": 0.05,
+      "c2_N_m_s2": 4.934210526315789e-08,
+      "method": "ols_residual_on_calibrated",
+      "endpoint_rmse_rad_s": 4.573069944652951e-05,
+      "endpoint_r2": 0.9999999999988662,
+      "skill_vs_persistence": 0.99999999995674,
+      "rmse_ci95_low_rad_s": 4.1893785991903704e-05,
+      "rmse_ci95_high_rad_s": 4.9568408767550276e-05
+    },
+    {
+      "epsilon": 0.05,
+      "c2_N_m_s2": 4.934210526315789e-08,
+      "method": "gru_residual",
+      "endpoint_rmse_rad_s": 0.0008098138411625737,
+      "endpoint_r2": 0.9999999996444646,
+      "skill_vs_persistence": 0.9999999864343414,
+      "rmse_ci95_low_rad_s": 0.0006825131867612507,
+      "rmse_ci95_high_rad_s": 0.0009301912597315401
+    },
+    {
+      "epsilon": 0.05,
+      "c2_N_m_s2": 4.934210526315789e-08,
+      "method": "jepa_residual",
+      "endpoint_rmse_rad_s": 0.0020808537540140345,
+      "endpoint_r2": 0.9999999976525545,
+      "skill_vs_persistence": 0.999999910431849,
+      "rmse_ci95_low_rad_s": 0.0019181361212297725,
+      "rmse_ci95_high_rad_s": 0.002254094018658343
+    },
+    {
+      "epsilon": 0.05,
+      "c2_N_m_s2": 4.934210526315789e-08,
+      "method": "rk4_oracle",
+      "endpoint_rmse_rad_s": 1.641025932717307e-05,
+      "endpoint_r2": 0.999999999999854,
+      "skill_vs_persistence": 0.9999999999944295,
+      "rmse_ci95_low_rad_s": 1.511229770051142e-05,
+      "rmse_ci95_high_rad_s": 1.765076603761e-05
+    },
+    {
+      "epsilon": 0.1,
+      "c2_N_m_s2": 1.0416666666666667e-07,
+      "method": "nominal_physics",
+      "endpoint_rmse_rad_s": 58.24589439579664,
+      "endpoint_r2": -0.8387791044652106,
+      "skill_vs_persistence": -69.13657626219864,
+      "rmse_ci95_low_rad_s": 56.44226472772202,
+      "rmse_ci95_high_rad_s": 60.05836491855823
+    },
+    {
+      "epsilon": 0.1,
+      "c2_N_m_s2": 1.0416666666666667e-07,
+      "method": "calibrated_physics",
+      "endpoint_rmse_rad_s": 5.31608949386256e-05,
+      "endpoint_r2": 0.9999999999984682,
+      "skill_vs_persistence": 0.9999999999415751,
+      "rmse_ci95_low_rad_s": 4.938124793045328e-05,
+      "rmse_ci95_high_rad_s": 5.679304241635334e-05
+    },
+    {
+      "epsilon": 0.1,
+      "c2_N_m_s2": 1.0416666666666667e-07,
+      "method": "ols_residual_on_calibrated",
+      "endpoint_rmse_rad_s": 4.5635625220276734e-05,
+      "endpoint_r2": 0.9999999999988712,
+      "skill_vs_persistence": 0.9999999999569452,
+      "rmse_ci95_low_rad_s": 4.1959779562702154e-05,
+      "rmse_ci95_high_rad_s": 4.908757720065902e-05
+    },
+    {
+      "epsilon": 0.1,
+      "c2_N_m_s2": 1.0416666666666667e-07,
+      "method": "gru_residual",
+      "endpoint_rmse_rad_s": 0.0008122906709261637,
+      "endpoint_r2": 0.99999999964238,
+      "skill_vs_persistence": 0.9999999863592938,
+      "rmse_ci95_low_rad_s": 0.0006860452059098393,
+      "rmse_ci95_high_rad_s": 0.0009318683884561449
+    },
+    {
+      "epsilon": 0.1,
+      "c2_N_m_s2": 1.0416666666666667e-07,
+      "method": "jepa_residual",
+      "endpoint_rmse_rad_s": 0.0020882648496750025,
+      "endpoint_r2": 0.9999999976364212,
+      "skill_vs_persistence": 0.9999999098459832,
+      "rmse_ci95_low_rad_s": 0.0019250391644036965,
+      "rmse_ci95_high_rad_s": 0.002261537940650767
+    },
+    {
+      "epsilon": 0.1,
+      "c2_N_m_s2": 1.0416666666666667e-07,
+      "method": "rk4_oracle",
+      "endpoint_rmse_rad_s": 1.6909332319773435e-05,
+      "endpoint_r2": 0.999999999999845,
+      "skill_vs_persistence": 0.999999999994089,
+      "rmse_ci95_low_rad_s": 1.5526811857151595e-05,
+      "rmse_ci95_high_rad_s": 1.8245953782999248e-05
+    },
+    {
+      "epsilon": 0.2,
+      "c2_N_m_s2": 2.3437499999999998e-07,
+      "method": "nominal_physics",
+      "endpoint_rmse_rad_s": 58.227799985197194,
+      "endpoint_r2": -0.8364971824005167,
+      "skill_vs_persistence": -68.99494028760677,
+      "rmse_ci95_low_rad_s": 56.424826152221314,
+      "rmse_ci95_high_rad_s": 60.03929883132892
+    },
+    {
+      "epsilon": 0.2,
+      "c2_N_m_s2": 2.3437499999999998e-07,
+      "method": "calibrated_physics",
+      "endpoint_rmse_rad_s": 5.314497029394133e-05,
+      "endpoint_r2": 0.9999999999984701,
+      "skill_vs_persistence": 0.9999999999416918,
+      "rmse_ci95_low_rad_s": 4.9499372353445374e-05,
+      "rmse_ci95_high_rad_s": 5.6636921446930596e-05
+    },
+    {
+      "epsilon": 0.2,
+      "c2_N_m_s2": 2.3437499999999998e-07,
+      "method": "ols_residual_on_calibrated",
+      "endpoint_rmse_rad_s": 4.583191079095954e-05,
+      "endpoint_r2": 0.9999999999988622,
+      "skill_vs_persistence": 0.9999999999566348,
+      "rmse_ci95_low_rad_s": 4.2849469454327486e-05,
+      "rmse_ci95_high_rad_s": 4.89429987895535e-05
+    },
+    {
+      "epsilon": 0.2,
+      "c2_N_m_s2": 2.3437499999999998e-07,
+      "method": "gru_residual",
+      "endpoint_rmse_rad_s": 0.0008105918808701208,
+      "endpoint_r2": 0.999999999644095,
+      "skill_vs_persistence": 0.9999999864352941,
+      "rmse_ci95_low_rad_s": 0.0006812668231031649,
+      "rmse_ci95_high_rad_s": 0.0009347077736046658
+    },
+    {
+      "epsilon": 0.2,
+      "c2_N_m_s2": 2.3437499999999998e-07,
+      "method": "jepa_residual",
+      "endpoint_rmse_rad_s": 0.002081791002816146,
+      "endpoint_r2": 0.9999999976525099,
+      "skill_vs_persistence": 0.9999999105294435,
+      "rmse_ci95_low_rad_s": 0.0019213068953047683,
+      "rmse_ci95_high_rad_s": 0.0022524768512293906
+    },
+    {
+      "epsilon": 0.2,
+      "c2_N_m_s2": 2.3437499999999998e-07,
+      "method": "rk4_oracle",
+      "endpoint_rmse_rad_s": 1.6803722741769174e-05,
+      "endpoint_r2": 0.999999999999847,
+      "skill_vs_persistence": 0.9999999999941707,
+      "rmse_ci95_low_rad_s": 1.547215169554277e-05,
+      "rmse_ci95_high_rad_s": 1.8173956892047912e-05
+    },
+    {
+      "epsilon": 0.5,
+      "c2_N_m_s2": 9.374999999999999e-07,
+      "method": "nominal_physics",
+      "endpoint_rmse_rad_s": 58.13027446022166,
+      "endpoint_r2": -0.8242416605442866,
+      "skill_vs_persistence": -68.23746551456209,
+      "rmse_ci95_low_rad_s": 56.33159725027481,
+      "rmse_ci95_high_rad_s": 59.936526113190055
+    },
+    {
+      "epsilon": 0.5,
+      "c2_N_m_s2": 9.374999999999999e-07,
+      "method": "calibrated_physics",
+      "endpoint_rmse_rad_s": 6.830572466577424e-05,
+      "endpoint_r2": 0.9999999999974812,
+      "skill_vs_persistence": 0.9999999999044016,
+      "rmse_ci95_low_rad_s": 6.262488549267825e-05,
+      "rmse_ci95_high_rad_s": 7.444698868623305e-05
+    },
+    {
+      "epsilon": 0.5,
+      "c2_N_m_s2": 9.374999999999999e-07,
+      "method": "ols_residual_on_calibrated",
+      "endpoint_rmse_rad_s": 4.918813866624447e-05,
+      "endpoint_r2": 0.9999999999986938,
+      "skill_vs_persistence": 0.9999999999504257,
+      "rmse_ci95_low_rad_s": 4.554418919419167e-05,
+      "rmse_ci95_high_rad_s": 5.2988864386572256e-05
+    },
+    {
+      "epsilon": 0.5,
+      "c2_N_m_s2": 9.374999999999999e-07,
+      "method": "gru_residual",
+      "endpoint_rmse_rad_s": 0.0008112247352119647,
+      "endpoint_r2": 0.9999999996447289,
+      "skill_vs_persistence": 0.9999999865159988,
+      "rmse_ci95_low_rad_s": 0.0006826816228829381,
+      "rmse_ci95_high_rad_s": 0.0009322905442888591
+    },
+    {
+      "epsilon": 0.5,
+      "c2_N_m_s2": 9.374999999999999e-07,
+      "method": "jepa_residual",
+      "endpoint_rmse_rad_s": 0.002076520106202612,
+      "endpoint_r2": 0.9999999976721773,
+      "skill_vs_persistence": 0.9999999116495641,
+      "rmse_ci95_low_rad_s": 0.0019137941451679655,
+      "rmse_ci95_high_rad_s": 0.002247710025786638
+    },
+    {
+      "epsilon": 0.5,
+      "c2_N_m_s2": 9.374999999999999e-07,
+      "method": "rk4_oracle",
+      "endpoint_rmse_rad_s": 1.7801742159201697e-05,
+      "endpoint_r2": 0.9999999999998289,
+      "skill_vs_persistence": 0.9999999999935067,
+      "rmse_ci95_low_rad_s": 1.6688871994650437e-05,
+      "rmse_ci95_high_rad_s": 1.890646485301659e-05
+    }
+  ],
+  "convergence": [
+    {
+      "epsilon": 0,
+      "max_step_halving_difference_rad_s": 1.7280399333685637e-11
+    },
+    {
+      "epsilon": 0.02,
+      "max_step_halving_difference_rad_s": 1.745092959026806e-11
+    },
+    {
+      "epsilon": 0.05,
+      "max_step_halving_difference_rad_s": 1.816147232602816e-11
+    },
+    {
+      "epsilon": 0.1,
+      "max_step_halving_difference_rad_s": 1.8673063095775433e-11
+    },
+    {
+      "epsilon": 0.2,
+      "max_step_halving_difference_rad_s": 1.7024603948812e-11
+    },
+    {
+      "epsilon": 0.5,
+      "max_step_halving_difference_rad_s": 1.887201506178826e-11
+    }
+  ],
+  "limitations": [
+    "Synthetic data",
+    "single-seed learned residual comparison",
+    "No experimental validation"
+  ]
+}

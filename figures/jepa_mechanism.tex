@@ -1,0 +1,19 @@
+\begin{tikzpicture}[font=\footnotesize, node distance=7mm and 10mm,
+  box/.style={draw=black, rounded corners=1pt, fill=gray!6, align=center, minimum height=9mm, minimum width=25mm},
+  arrow/.style={-latex, thick, draw=black}, dashedarrow/.style={-latex, thick, dashed, draw=black}]
+\node[box] (physics) {calibrated physics\\$J\dot\omega=\tau_m-\tau_L$};
+\node[box, right=of physics] (data) {trajectory\\$(\omega_t,u_t)$};
+\node[box, right=of data] (split) {context\\$t=0{:}19$};
+\node[box, below=of split] (future) {future target\\$t=20{:}219$\\[-1pt]{\scriptsize training only}};
+\node[box, right=of split] (encoder) {context encoder\\$z_c$};
+\node[box, right=of future] (target) {target encoder\\$z_y$\\[-1pt]{\scriptsize EMA; no gradient}};
+\node[box, right=of encoder] (predictor) {predictor\\$\hat z_y=f(z_c,u)$};
+\node[box, below=of predictor] (head) {trajectory head\\$\hat r_{20:219}$};
+\node[box, right=of predictor] (output) {forecast\\$\hat\omega=\omega_{\rm cal}+\hat r$};
+\draw[arrow] (physics)--(data); \draw[arrow] (data)--(split); \draw[arrow] (data)--(future);
+\draw[arrow] (split)--(encoder); \draw[arrow] (future)--(target); \draw[arrow] (encoder)--(predictor);
+\draw[arrow] (predictor)--(output); \draw[arrow] (encoder)--(head); \draw[arrow] (head)--(output);
+\draw[dashedarrow] (target.north) to[out=90,in=-90] (predictor.south);
+\draw[dashedarrow] (encoder.south) to[bend right=42] (target.north);
+\node[below=7mm of head, align=center, font=\scriptsize] {solid arrows: inference path\qquad dashed arrows: training objective and target update};
+\end{tikzpicture}
