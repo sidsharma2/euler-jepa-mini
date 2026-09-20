@@ -50,9 +50,7 @@ The change in tangential velocity produces a specific stagnation-enthalpy
 change. The blade speed at the representative radius is $U=r\omega$:
 
 $$
-\Delta h_0 = U\,\Delta C_\theta,
-\qquad
-U = r\omega.
+\Delta h_0 = U\,\Delta C_\theta,\qquad U = r\omega.
 $$
 
 ### 2. Rotor angular-momentum balance
@@ -60,10 +58,7 @@ $$
 The corresponding Euler torque changes the rotor angular momentum:
 
 $$
-J\,\frac{d\omega}{dt}
-= \tau_{\mathrm{Euler}} - \tau_{\mathrm{load}}
-= \dot{m}\,r\,\Delta C_\theta
-  - c_0 - c_2\omega^2.
+J\,\frac{d\omega}{dt} = \tau_{\mathrm{Euler}} - \tau_{\mathrm{load}} = \dot{m}\,r\,\Delta C_\theta - c_0 - c_2\omega^2.
 $$
 
 The benchmark uses the simple closure
@@ -75,11 +70,7 @@ $$
 so the complete scalar state equation is
 
 $$
-\boxed{
-J\,\frac{d\omega}{dt}
-= \dot{m}\,r\left(k_u u-k_\omega\omega\right)
-  - c_0 - c_2\omega^2
-}
+\boxed{J\,\frac{d\omega}{dt} = \dot{m}\,r\left(k_u u-k_\omega\omega\right) - c_0 - c_2\omega^2}
 $$
 
 Here, $\omega$ is rotor angular speed, $J$ is rotational inertia, $\dot{m}$
