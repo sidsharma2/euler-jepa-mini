@@ -1,0 +1,81 @@
+\documentclass[10pt,journal]{IEEEtran}
+\usepackage{amsmath,amssymb,booktabs,hyperref,siunitx,graphicx,fancyhdr}
+\sisetup{detect-all}
+\hypersetup{hidelinks}
+\fancypagestyle{paper}{\fancyhf{}\fancyfoot[R]{\thepage}\renewcommand{\headrulewidth}{0pt}}
+\fancypagestyle{IEEEtitlepagestyle}{\fancyhf{}\fancyfoot[R]{\thepage}\renewcommand{\headrulewidth}{0pt}}
+\pagestyle{paper}
+\graphicspath{{../figures/}}
+\newcommand{\tablefile}[1]{\IfFileExists{../results/tables/#1.tex}{\input{../results/tables/#1.tex}}{\textit{(table #1 pending)}}}
+
+\title{Action-Conditioned Joint-Embedding World Models for a Rotor Observed Only Through Its Sound}
+\author{Siddharth Sharma$^{\dagger}$\thanks{$^{\dagger}$Corresponding author: sid.sharma@ubc.ca. Agent-assisted study (Claude Code, claude-opus-5-5); all results are synthetic and unvalidated against hardware.}}
+
+\begin{document}
+\maketitle
+
+\input{abstract_v2.tex}
+
+\section{From an audit to a redesign}
+The first Euler-JEPA study asked whether a joint-embedding predictive architecture (JEPA) can learn a useful correction to a calibrated rotor model, and answered no. Re-reading that implementation shows that the negative result was largely structural. The rotor speed was observed directly and without noise, so there was nothing for representation learning to do. The JEPA latent prediction entered only as an auxiliary loss with weight 0.05, while the forecast came from a separate supervised head. The control was constant within every sequence, so the control derivative was not identifiable from the data. Finally, the full-trajectory protocol paired initial speeds near \SI{400}{\radian\per\second} with an equilibrium near \SI{21}{\radian\per\second}, so every sequence was a spin-down far from any operating point.
+
+This paper keeps the physics and the honesty of the audit, but poses the question JEPA is designed for~\cite{assran2023ijepa,bardes2024vjepa}. Can a world model learned without labels, by predicting in representation space, recover the state, dynamics and control authority of a machine that is only \emph{partially and noisily observed}? We also ask how it compares with reconstruction-based world models, supervised learning, and a classical pipeline that is given the true equation.
+
+\section{Benchmark}
+\subsection{Truth model}
+The rotor balance from Euler work is extended with a lagged, delayed actuator:
+\begin{equation}
+J\dot\omega=\dot m r(k_u a-k_\omega\omega)-c_0-c_2\omega^2,\qquad \tau_a\dot a=u(t-d\Delta t)-a.
+\end{equation}
+Here $r=\SI{0.25}{\metre}$, $k_u=\SI{100}{\metre\per\second}$, $c_0=\SI{0.15}{\newton\metre}$ and $\Delta t=\SI{0.01}{\second}$. For each episode we draw $\dot m\in[0.70,0.90]$~\si{\kilogram\per\second}, $J\in[0.017,0.023]$~\si{\kilogram\metre\squared}, $k_\omega\in[0.12,0.18]$~\si{\metre}, $c_2\in[0,1.5\times10^{-5}]$~\si{\newton\metre\second\squared}, $\tau_a\in[0.03,0.25]$~\si{\second} and $d\in\{0,\dots,4\}$ samples. These parameters are never shown to the learned models. Equilibrium speeds span roughly 130--\SI{740}{\radian\per\second}, and $1/\beta=J/(\dot m r k_\omega)$ is 0.5--\SI{1}{\second}. The held-out regime moves $J$ to $[0.023,0.028]$ and $c_2$ to $[1.5,3]\times10^{-5}$. Commands are piecewise-constant or ramped system-identification excitation, held for 0.15--\SI{0.8}{\second}. Integration uses RK4 with ten substeps per sample under zero-order hold. Unit tests verify the exact linear-limit solution, the equilibrium fixed point, the exact delay shift and sample-exact regeneration of every stored episode.
+
+\subsection{Observation model}
+The models observe a 64-bin log-power spectrum of a synthetic casing microphone every \SI{10}{\milli\second} (0--\SI{3.2}{\kilo\hertz}, \SI{50}{\hertz} bins). It contains three blade-passing harmonics at $hN_b\omega/2\pi$ ($N_b=11$), with a fan-law speed level and a steady-loading term in the Euler torque, plus speed-dependent pink flow noise and periodogram fluctuation ($\chi^2_8/8$). Nuisance at level $\lambda$ adds distractor tones that hop in frequency and switch on and off, impulsive broadband bursts, calibration offsets and slow gain drift (Fig.~\ref{fig:problem}). Speed is never observed, except as labels for a small subset of training episodes in the probe and supervised experiments. This is a declared synthetic model of tacholess speed sensing, not a calibrated machine.
+
+\begin{figure}[!t]\centering
+\includegraphics[width=\columnwidth]{fig_problem.pdf}
+\caption{One test episode. Top: the model input, with the hidden blade-passing harmonics overlaid (dashed). Bottom: the hidden speed and the known command; forecasts start at \SI{2}{\second}.}
+\label{fig:problem}
+\end{figure}
+
+\subsection{Data and protocol}
+There are 3000 training episodes, 300 validation episodes, and 300-episode test sets for the training distribution, the held-out regime and $\lambda\in\{0,0.5,1,2,3\}$. Each episode lasts \SI{4}{\second}. Forecasts use the first \SI{2}{\second} as context and predict the next \SI{2}{\second} open loop under the known future commands. The test sets are used only for the reported numbers.
+
+\section{Methods}
+\subsection{Two-stage action-conditioned JEPA}
+Fig.~\ref{fig:arch} summarises the model. A causal time--frequency CNN trunk $T$ (three $3\times5$ convolutions, causal in time) is first pre-trained alone by masked latent prediction, in the I-JEPA/A-JEPA style~\cite{assran2023ijepa,fei2023ajepa}. The context trunk sees a 32-frame crop with two or three time--frequency blocks and the last 3--8 frames removed. A convolutional predictor must match the per-position layer-normalised features of an EMA target trunk at the masked positions (L1 loss, cosine momentum schedule 0.996$\to$1). There are no actions and no labels at this stage.
+
+The trunk is then frozen. A trainable spatial-soft-argmax readout~\cite{finn2016spatial} and a GRU belief encoder turn the trunk features and the past commands into $z_t\in\mathbb{R}^{48}$, which is layer-normalised. A residual action-conditioned predictor $z_{t+1}=\mathrm{LN}(z_t+f_\phi(z_t,u_t))$ is rolled out for $K=64$ steps. The stage-2 loss requires $q(z_t)$, $q(P(z_t,u_t))$ and $q(P^k(z_t,u_{t:t+k}))$ to match the frozen, pooled feature maps of the corresponding frames. This is the recipe of V-JEPA~2-AC~\cite{assran2025vjepa2}. A latent-consistency term $\lVert P^k(z_t,\cdot)-\operatorname{sg}(z_{t+k})\rVert^2$, as in TD-MPC2~\cite{hansen2024tdmpc2}, keeps open-loop rollouts on the manifold that the read-outs are fitted on. It is applied identically to every learned method.
+
+Speed is read out by a frozen ridge probe fitted on $N$ labelled training episodes. Forecasts decode the latent rollout through the same probe. Control-authority estimates are autograd derivatives through the rollout. Planning uses CEM-MPC directly in latent space.
+
+\begin{figure*}[!t]\centering
+\includegraphics[width=0.85\textwidth]{jepa_v2_architecture.pdf}
+\caption{Two-stage action-conditioned JEPA. Stage 1 (not shown) pre-trains the spectrogram trunk by masked latent prediction. Stage 2, shown here, freezes it and trains the belief encoder and action-conditioned predictor to predict future frozen embeddings.}
+\label{fig:arch}
+\end{figure*}
+
+\subsection{Controls}
+All learned controls share the trunk architecture, readout, belief encoder, predictor, optimiser, batch size, crop length, rollout length and step budget.
+\emph{Reconstruction world model}: trained end to end to decode every encoded and predicted latent back to the spectrum, which is observation prediction as in PlaNet/Dreamer-style models~\cite{hafner2019planet}.
+\emph{Supervised}: trained end to end to regress the true speed from every encoded and predicted latent, with 10--3000 labelled episodes and early stopping on labelled validation speed error. This is the only method given label-based checkpoint selection.
+\emph{JEPA + fine-tune}: the JEPA world model fine-tuned with the supervised loss.
+\emph{Random-trunk JEPA}: stage 2 on a randomly initialised frozen trunk, to test whether stage-1 pre-training matters.
+\emph{Classical}: a harmonic-comb speed tracker (three-harmonic sum with Viterbi smoothing under a slew limit, tuned on validation), followed by batched output-error identification of the \emph{true} ODE form with a delay search, and simulation. This pipeline knows the governing equation; the learned models do not.
+We also report nominal physics, persistence, an oracle with the true parameters and state, a PI controller on the tracked speed (gains tuned on validation), and a random-encoder probe.
+
+\section{Development failures worth reporting}
+Three failure modes appeared during development, and each shaped the final design.
+(i) \emph{Action shortcut.} A single-stage JEPA whose EMA-target encoder also received the commands collapsed to an effective latent rank of 2.6 of 48. Its speed probe stayed at the level of a random encoder. The latent encoded only the command history, which the action-conditioned predictor can forecast perfectly. VICReg-strength variance and covariance regularisation~\cite{bardes2022vicreg} did not prevent this; self-predictive RL representations~\cite{schwarzer2021spr} face the same risk. Observation-only targets did (the two-stage design).
+(ii) \emph{Read-out bottleneck.} An untrained soft-argmax read-out discarded the speed information: an MLP probe on the full trunk map reached \SI{5.1}{\radian\per\second}, against \SI{18.1}{\radian\per\second} on the read-out. The read-out is therefore trained in stage 2.
+(iii) \emph{Rollout drift.} Without the consistency term, probe-decoded rollouts diverged beyond the training horizon (validation error of several hundred \si{\radian\per\second} at \SI{1}{\second}).
+
+\section{Results}
+\input{results_v2.tex}
+
+\section{Limitations and claim boundary}
+Everything here is synthetic. The truth model is a scalar rotor with a first-order actuator, and the sensor is a declared spectral model rather than a measured microphone. The classical baseline is given the exact model structure, which a real engine would not offer, while the learned models are given 3000 unlabelled episodes, which a real test cell might. The results establish what this JEPA formulation can and cannot recover under controlled conditions. They are not a validation of any engine, sensor or controller.
+
+\bibliographystyle{IEEEtran}
+\bibliography{references_v2}
+\end{document}

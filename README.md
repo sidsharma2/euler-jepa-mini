@@ -1,8 +1,29 @@
-# Euler-JEPA mini
+# Euler-JEPA
+
+> **Current version: v2 — [`v2/`](v2/README.md).** An action-conditioned JEPA world
+> model that learns a rotor's dynamics from synthetic casing-microphone spectrograms,
+> without ever seeing the speed. It is evaluated against reconstruction world models,
+> supervised learning and a classical pipeline given the true ODE. v2 is a full redesign,
+> motivated by the v1 audit below. Its numbers are not comparable with v1.
+>
+> * Paper (IEEE style, LaTeX + TikZ): [`v2/paper/main.tex`](v2/paper/main.tex) / [`main.pdf`](v2/paper/main.pdf)
+> * Figures as SVG: [`v2/paper/svg/`](v2/paper/svg/)
+> * Results and the plain-language summary: [`v2/README.md`](v2/README.md)
+> * Reproduce: `python v2/make_data.py && python v2/run_v2.py train && python v2/run_v2.py eval`
+>
+> Status: the final multi-seed runs are in progress. Figures and the paper are
+> regenerated from `v2/results/` and update when the runs finish.
+
+![Label efficiency](v2/paper/svg/fig_labels.svg)
+
+---
+
+## v1 (archived): Euler-JEPA mini audit
 
 Physics-grounded, reproducible research software for auditing a small
 joint-embedding predictive architecture (JEPA) on a synthetic rotor-dynamics
-benchmark.
+benchmark. This is the original study. Its negative result, and the reasons for it,
+motivated v2.
 
 The accompanying paper is an honest method-development study. It asks whether
 a JEPA-style latent objective can learn a useful correction to a calibrated

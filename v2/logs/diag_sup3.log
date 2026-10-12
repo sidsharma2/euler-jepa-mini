@@ -1,0 +1,2 @@
+{"step": 1, "ae": 0.81846, "roll": 1.38373, "tf": 0.81921, "loss": 3.02141, "eff_rank": 1.63141, "lr": 4e-05, "elapsed_s": 2.29502, "val_filter_rmse": 74.4943, "val_roll_rmse": 121.02014}
+{"step": 250, "ae": 0.04151, "roll": 0.04516, "tf": 0.04118, "loss": 0.12785, "eff_rank": 3.73013, "lr": 0.00085, "elapsed_s": 774.73458, "val_filter_rmse": 19.16179, "val_roll_rmse": 28.98988}

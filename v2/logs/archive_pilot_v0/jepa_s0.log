@@ -1,0 +1,4 @@
+[23:11:26] training {'name': 'jepa_s0', 'method': 'jepa', 'seed': 0, 'train': 'train', 'val': 'val'} on cuda
+[23:13:35] {"step": 1, "roll": 0.63163, "tf": 0.05294, "var": 0.42112, "cov": 0.00206, "loss": 1.10577, "eff_rank": 16.70997, "lr": 2e-05, "elapsed_s": 21.15639, "val_filter_rmse": 36.13046, "val_roll_rmse": 3121.78101}
+[23:24:50] {"step": 250, "roll": 0.1437, "tf": 0.03221, "var": 0.01842, "cov": 0.48739, "loss": 0.21383, "eff_rank": 14.00621, "lr": 0.00098, "elapsed_s": 677.37065, "val_filter_rmse": 32.48331, "val_roll_rmse": 113.22736}
+[23:34:35] {"step": 500, "roll": 0.22548, "tf": 0.04404, "var": 0.00092, "cov": 0.51228, "loss": 0.29093, "eff_rank": 15.11928, "lr": 0.0009, "elapsed_s": 1284.54445, "val_filter_rmse": 32.77898, "val_roll_rmse": 59.57272}

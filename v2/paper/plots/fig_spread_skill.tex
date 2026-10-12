@@ -1,0 +1,21 @@
+\documentclass[border=4pt]{standalone}
+\input{common.tex}
+\begin{document}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.6cm}, panel, xmode=log, ymode=log,
+  xlabel={Ensemble spread $\sigma$ (rad\,s$^{-1}$)}, ylabel={Realised RMSE (rad\,s$^{-1}$)},
+  xmin=0.5, xmax=40, ymin=1, ymax=60, logticks, xtick={1,2,5,10,20}, xticklabels={1,2,5,10,20}]
+\nextgroupplot[title={In distribution}, legend to name=sslegend, legend columns=4]
+  \addplot[black!50, dashed, domain=0.5:40, samples=2] {x}; \addlegendentry{RMSE $=\sigma$}
+  \addplot[cJepa, mark=*] table[x=spread, y=rmse] {\datadir/spread_skill_jepa_long_test_id.csv}; \addlegendentry{JEPA WM ensemble}
+  \addplot[cRecon, mark=*] table[x=spread, y=rmse] {\datadir/spread_skill_recon_long_test_id.csv}; \addlegendentry{Reconstruction WM ensemble}
+  \addplot[cSup, mark=*] table[x=spread, y=rmse] {\datadir/spread_skill_sup_all_long_test_id.csv}; \addlegendentry{Supervised ensemble}
+\nextgroupplot[title={Nuisance $\lambda=3$}]
+  \addplot[black!50, dashed, domain=0.5:40, samples=2] {x};
+  \addplot[cJepa, mark=*] table[x=spread, y=rmse] {\datadir/spread_skill_jepa_long_test_lam3.csv};
+  \addplot[cRecon, mark=*] table[x=spread, y=rmse] {\datadir/spread_skill_recon_long_test_lam3.csv};
+  \addplot[cSup, mark=*] table[x=spread, y=rmse] {\datadir/spread_skill_sup_all_long_test_lam3.csv};
+\end{groupplot}
+\node[anchor=north] at ($(group c1r1.south)!0.5!(group c2r1.south) + (0,-1.0cm)$) {\pgfplotslegendfromname{sslegend}};
+\end{tikzpicture}
+\end{document}

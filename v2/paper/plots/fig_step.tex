@@ -1,0 +1,29 @@
+\documentclass[border=4pt]{standalone}
+\input{common.tex}
+\begin{document}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.8cm}, panel]
+\nextgroupplot[title={Step response to a command change (three test episodes)},
+  xlabel={Time after step (s)}, ylabel={$\partial\hat\omega/\partial u$ (rad\,s$^{-1}$)}, xmin=0, xmax=2,
+  ymin=-20, legend to name=steplegend, legend columns=5]
+  \foreach \i in {0,5,9}{
+    \addplot[black, line width=1.4pt] table[x=t, y=true\i] {\datadir/step_examples.csv};
+    \addplot[cGrey, densely dotted] table[x=t, y=grey\i] {\datadir/step_examples.csv};
+    \addplot[cJepa, dashed] table[x=t, y=jepa\i] {\datadir/step_examples.csv};
+    \addplot[cRecon, dashed] table[x=t, y=recon\i] {\datadir/step_examples.csv};
+    \addplot[cSup, dashed] table[x=t, y=sup\i] {\datadir/step_examples.csv};
+  }
+  \legend{Truth (simulator), Grey-box (true ODE), JEPA WM, Reconstruction WM, Supervised (3000 labels)}
+\nextgroupplot[title={Error of the 2\,s control gain (median, IQR)}, ybar, bar width=16pt, bar shift=0pt,
+  ymode=log, ylabel={Relative gain error}, symbolic x coords={jepa,recon,sup,grey}, xtick={jepa,recon,sup,grey},
+  xticklabels={JEPA WM, Recon.\ WM, Supervised, Grey-box}, ymin=0.005, ymax=1, enlarge x limits=0.18,
+  log origin=infty, ytick={0.01,0.03,0.1,0.3,1}, yticklabels={0.01,0.03,0.1,0.3,1}]
+  \foreach \m/\c in {jepa/cJepa,recon/cRecon,sup/cSup,grey/cGrey}{
+    \edef\temp{\noexpand\addplot[fill=\c, draw=none, error bars/.cd, y dir=both, y explicit]
+      table[x=method, y=med, y error plus expr=\noexpand\thisrow{q75}-\noexpand\thisrow{med},
+            y error minus expr=\noexpand\thisrow{med}-\noexpand\thisrow{q25}]
+      {\noexpand\datadir/step_gain_error_\m.csv};}\temp}
+\end{groupplot}
+\node[anchor=north] at ($(group c1r1.south)!0.5!(group c2r1.south) + (0,-1.0cm)$) {\pgfplotslegendfromname{steplegend}};
+\end{tikzpicture}
+\end{document}

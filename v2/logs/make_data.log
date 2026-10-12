@@ -1,0 +1,11 @@
+﻿val            n=  300 lam=1 regime=id omega=[174,670] 67s
+test_id        n=  300 lam=1 regime=id omega=[182,689] 9s
+train          n= 3000 lam=1 regime=id omega=[143,685] 158s
+test_ood       n=  300 lam=1 regime=ood omega=[155,543] 7s
+test_lam0      n=  300 lam=0 regime=id omega=[179,655] 7s
+test_lam0.5    n=  300 lam=0.5 regime=id omega=[169,647] 13s
+test_lam1      n=  300 lam=1 regime=id omega=[166,664] 12s
+test_lam2      n=  300 lam=2 regime=id omega=[156,616] 7s
+test_lam3      n=  300 lam=3 regime=id omega=[162,636] 10s
+train_hi       n= 3000 lam=2.5 regime=id omega=[159,683] 105s
+val_hi         n=  300 lam=2.5 regime=id omega=[174,623] 6s

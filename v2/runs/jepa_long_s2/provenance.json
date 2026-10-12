@@ -1,0 +1,22 @@
+{
+  "git_head": "5b3c2a172e0a75f13fd19c5118364dc9770b354e",
+  "python": "3.12.13",
+  "torch": "2.10.0+cu126",
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "timestamp": "2026-10-12T15:34:07",
+  "agent": "Claude Code (claude-opus-5-5)",
+  "spec": {
+    "name": "jepa_long_s2",
+    "method": "jepa",
+    "seed": 2,
+    "train": "train",
+    "val": "val",
+    "init_from": "jepa1_s2/encoder.pt",
+    "rollout_k": 128,
+    "crop": 320,
+    "steps": 8000,
+    "anchors": 8
+  },
+  "wall_s": 25187.371382951736
+}

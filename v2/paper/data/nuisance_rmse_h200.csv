@@ -1,0 +1,6 @@
+lam,jepa_m,jepa_lo,jepa_hi,recon_m,recon_lo,recon_hi,sup_m,sup_lo,sup_hi,jepahi_m,jepahi_lo,jepahi_hi,reconhi_m,reconhi_lo,reconhi_hi,jepamix_m,jepamix_lo,jepamix_hi,reconmix_m,reconmix_lo,reconmix_hi,greybox,hyb_jepa,hyb_jepaft,hyb_tracker
+0,10.0957,10.0957,10.0957,16.8153,16.8153,16.8153,6.77519,6.77519,6.77519,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,4.07265,nan,nan,nan
+0.5,10.4596,10.4596,10.4596,16.0252,16.0252,16.0252,6.70245,6.70245,6.70245,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,4.24219,nan,nan,nan
+1,11.5632,11.5632,11.5632,17.7032,17.7032,17.7032,7.14433,7.14433,7.14433,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,5.28901,nan,nan,nan
+2,11.5885,11.5885,11.5885,17.5585,17.5585,17.5585,8.38345,8.38345,8.38345,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,5.90044,nan,nan,nan
+3,12.9122,12.9122,12.9122,21.2343,21.2343,21.2343,11.076,11.076,11.076,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,14.3243,nan,nan,nan

@@ -1,0 +1,28 @@
+\documentclass[border=4pt]{standalone}
+\input{common.tex}
+\begin{document}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.6cm}, panel, ymode=log, rad, logticks,
+  xlabel={Test nuisance level $\lambda$}, xmin=-0.15, xmax=3.15, xtick={0,0.5,1,2,3}]
+\nextgroupplot[title={State estimation (filtering)}, legend to name=nuislegend, legend columns=4, ymin=1, ymax=30]
+  \addplot[cGrey, mark=square*] table[x=lam, y=greybox] {\datadir/nuisance_filter_rmse.csv}; \addlegendentry{Comb tracker / grey-box}
+  \bandplot{\datadir/nuisance_filter_rmse.csv}{lam}{recon}{cRecon}{Reconstruction WM ($\lambda_\mathrm{train}{=}1$)}
+  \bandplot{\datadir/nuisance_filter_rmse.csv}{lam}{jepa}{cJepa}{JEPA WM ($\lambda_\mathrm{train}{=}1$)}
+  \addplot[cMix, mark=diamond*] table[x=lam, y=jepamix_m] {\datadir/nuisance_filter_rmse.csv}; \addlegendentry{JEPA WM ($\lambda_\mathrm{train}\sim U[0,3]$)}
+  \addplot[cHi, mark=triangle*] table[x=lam, y=jepahi_m] {\datadir/nuisance_filter_rmse.csv}; \addlegendentry{JEPA WM ($\lambda_\mathrm{train}{=}2.5$)}
+  \bandplot{\datadir/nuisance_filter_rmse.csv}{lam}{sup}{cSup}{Supervised, 3000 labels}
+  \addplot[cHybrid, mark=pentagon*, dashed] coordinates {(-10,1)}; \addlegendentry{Hybrid: JEPA sensor + grey-box}
+  \draw[densely dotted, black!40] (axis cs:1,1) -- (axis cs:1,30);
+\nextgroupplot[title={2\,s open-loop forecast}, ymin=3, ymax=40]
+  \addplot[cGrey, mark=square*, forget plot] table[x=lam, y=greybox] {\datadir/nuisance_rmse_h200.csv};
+  \bandplotnl{\datadir/nuisance_rmse_h200.csv}{lam}{recon}{cRecon}
+  \bandplotnl{\datadir/nuisance_rmse_h200.csv}{lam}{jepa}{cJepa}
+  \addplot[cMix, mark=diamond*, forget plot] table[x=lam, y=jepamix_m] {\datadir/nuisance_rmse_h200.csv};
+  \addplot[cHi, mark=triangle*, forget plot] table[x=lam, y=jepahi_m] {\datadir/nuisance_rmse_h200.csv};
+  \bandplotnl{\datadir/nuisance_rmse_h200.csv}{lam}{sup}{cSup}
+  \addplot[cHybrid, mark=pentagon*, dashed, forget plot, unbounded coords=jump] table[x=lam, y=hyb_jepa] {\datadir/nuisance_rmse_h200.csv};
+  \draw[densely dotted, black!40] (axis cs:1,3) -- (axis cs:1,40);
+\end{groupplot}
+\node[anchor=north] at ($(group c1r1.south)!0.5!(group c2r1.south) + (0,-1.0cm)$) {\pgfplotslegendfromname{nuislegend}};
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,8 @@
+﻿stage-2 JEPA: frozen spectrogram trunk from C:\Users\siddh\AppData\Local\Temp\claude\D--\d65c8772-51e3-4e1b-bcce-3beb7bb4b0d4\scratchpad\diag_runs\jepa1_1500\encoder.pt
+{"step": 1, "now": 0.82055, "roll": 0.8153, "tf": 0.82014, "loss": 2.45599, "eff_rank": 4.38217, "lr": 8e-05, "elapsed_s": 1.29208, "val_filter_rmse": 32.89514, "val_roll_rmse": 12868.28027}
+{"step": 100, "now": 0.31277, "roll": 0.32203, "tf": 0.3132, "loss": 0.94801, "eff_rank": 2.5474, "lr": 0.0009, "elapsed_s": 19.85148, "val_filter_rmse": 33.71367, "val_roll_rmse": 1016.01819}
+{"step": 200, "now": 0.30384, "roll": 0.30861, "tf": 0.30405, "loss": 0.9165, "eff_rank": 3.77556, "lr": 0.00065, "elapsed_s": 37.15797, "val_filter_rmse": 25.46936, "val_roll_rmse": 365.62668}
+{"step": 300, "now": 0.23128, "roll": 0.2424, "tf": 0.23124, "loss": 0.70492, "eff_rank": 4.32847, "lr": 0.00035, "elapsed_s": 54.47086, "val_filter_rmse": 22.46703, "val_roll_rmse": 287.5217}
+{"step": 400, "now": 0.22317, "roll": 0.23025, "tf": 0.22295, "loss": 0.67638, "eff_rank": 4.82382, "lr": 0.0001, "elapsed_s": 72.05341, "val_filter_rmse": 20.89495, "val_roll_rmse": 365.44495}
+{"step": 500, "now": 0.22344, "roll": 0.23501, "tf": 0.22372, "loss": 0.68218, "eff_rank": 4.96877, "lr": 0.0, "elapsed_s": 89.34915, "val_filter_rmse": 20.59087, "val_roll_rmse": 419.35397}
+sec/step 0.1940349245071411

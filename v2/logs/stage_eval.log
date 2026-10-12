@@ -1,0 +1,62 @@
+[01:45:16] {"git_head": "5b3c2a172e0a75f13fd19c5118364dc9770b354e", "python": "3.12.13", "torch": "2.10.0+cu126", "device": "cuda", "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU", "timestamp": "2026-10-12T01:45:16", "agent": "Claude Code (claude-opus-5-5)"}
+[01:47:27] eval jepa_s0+probe10: test_id=16.81
+[01:49:29] eval jepa_s0+probe30: test_id=14.94
+[01:51:41] eval jepa_s0+probe100: test_id=14.81
+[01:55:54] eval jepa_s0+probe300: test_id=14.67, test_ood=15.66, test_lam0=13.51, test_lam0.5=14.04, test_lam1=15.74, test_lam2=15.65, test_lam3=16.62
+[01:58:04] eval jepa_s0+probe3000: test_id=14.71
+[01:58:21] eval jepa_s0+mlp300: test_id=13.36/filt 4.30, test_ood=15.00/filt 4.35, test_lam3=15.57/filt 11.02
+[01:58:23] param probe jepa_s0: {"mass_flow_kg_s": -0.065, "inertia_kg_m2": -0.033, "speed_feedback_m": 0.687, "quad_load_N_m_s2": 0.175, "actuator_tau_s": -0.005, "delay_steps": -0.044}
+[02:00:25] eval recon_s0+probe10: test_id=22.43
+[02:02:19] eval recon_s0+probe30: test_id=18.78
+[02:04:12] eval recon_s0+probe100: test_id=18.56
+[02:08:21] eval recon_s0+probe300: test_id=18.06, test_ood=17.93, test_lam0=17.94, test_lam0.5=17.93, test_lam1=19.92, test_lam2=19.59, test_lam3=23.62
+[02:10:27] eval recon_s0+probe3000: test_id=17.90
+[02:10:42] eval recon_s0+mlp300: test_id=12.24/filt 4.64, test_ood=15.38/filt 4.16, test_lam3=18.99/filt 15.78
+[02:10:43] param probe recon_s0: {"mass_flow_kg_s": -0.057, "inertia_kg_m2": -0.029, "speed_feedback_m": 0.694, "quad_load_N_m_s2": 0.146, "actuator_tau_s": 0.025, "delay_steps": 0.007}
+[02:14:46] eval sup_all_s0: test_id=11.87, test_ood=14.86, test_lam0=11.43, test_lam0.5=12.19, test_lam1=12.58, test_lam2=12.80, test_lam3=13.83
+[02:14:47] param probe sup_all_s0: {"mass_flow_kg_s": 0.014, "inertia_kg_m2": 0.018, "speed_feedback_m": 0.761, "quad_load_N_m_s2": 0.216, "actuator_tau_s": 0.037, "delay_steps": -0.016}
+[03:06:19] {"git_head": "5b3c2a172e0a75f13fd19c5118364dc9770b354e", "python": "3.12.13", "torch": "2.10.0+cu126", "device": "cuda", "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU", "timestamp": "2026-10-12T03:06:19", "agent": "Claude Code (claude-opus-5-5)"}
+[03:06:31] eval jepa_rand_s0+probe10: test_id=17.23
+[03:06:35] eval jepa_rand_s0+probe30: test_id=15.96
+[03:06:39] eval jepa_rand_s0+probe100: test_id=16.00
+[03:06:57] eval jepa_rand_s0+probe300: test_id=15.65, test_ood=16.14, test_lam0=15.27, test_lam0.5=15.71, test_lam1=16.50, test_lam2=18.78, test_lam3=20.10
+[03:07:11] eval jepa_rand_s0+probe3000: test_id=15.76
+[03:07:29] eval jepa_rand_s0+mlp300: test_id=14.85/filt 8.64, test_ood=15.61/filt 6.87, test_lam3=19.11/filt 17.93
+[03:07:32] eval jepa_long_s0+probe10: test_id=11.88
+[03:07:36] eval jepa_long_s0+probe30: test_id=10.64
+[03:07:39] eval jepa_long_s0+probe100: test_id=10.30
+[03:07:58] eval jepa_long_s0+probe300: test_id=10.14, test_ood=14.41, test_lam0=10.10, test_lam0.5=10.46, test_lam1=11.56, test_lam2=11.59, test_lam3=12.91
+[03:08:11] eval jepa_long_s0+probe3000: test_id=10.10
+[03:08:28] eval jepa_long_s0+mlp300: test_id=8.98/filt 3.67, test_ood=13.36/filt 3.71, test_lam3=11.93/filt 10.30
+[03:08:31] eval jepa_ctx_s0+probe10: test_id=17.41
+[03:08:35] eval jepa_ctx_s0+probe30: test_id=16.16
+[03:08:38] eval jepa_ctx_s0+probe100: test_id=16.63
+[03:08:57] eval jepa_ctx_s0+probe300: test_id=16.06, test_ood=19.08, test_lam0=15.20, test_lam0.5=15.56, test_lam1=16.48, test_lam2=17.25, test_lam3=18.87
+[03:09:09] eval jepa_ctx_s0+probe3000: test_id=16.81
+[03:09:27] eval jepa_ctx_s0+mlp300: test_id=12.98/filt 4.70, test_ood=16.79/filt 4.31, test_lam3=15.37/filt 11.47
+[04:11:46] {"git_head": "5b3c2a172e0a75f13fd19c5118364dc9770b354e", "python": "3.12.13", "torch": "2.10.0+cu126", "device": "cuda", "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU", "timestamp": "2026-10-12T04:11:46", "agent": "Claude Code (claude-opus-5-5)"}
+[04:11:56] eval jepa_long_s0+probe10: test_id=11.88
+[04:11:58] eval jepa_long_s0+probe30: test_id=10.64
+[04:12:01] eval jepa_long_s0+probe100: test_id=10.30
+[04:12:15] eval jepa_long_s0+probe300: test_id=10.14, test_ood=14.41, test_lam0=10.10, test_lam0.5=10.46, test_lam1=11.56, test_lam2=11.59, test_lam3=12.91
+[04:12:27] eval jepa_long_s0+probe3000: test_id=10.10
+[04:12:40] eval jepa_long_s0+mlp300: test_id=8.98/filt 3.67, test_ood=13.36/filt 3.71, test_lam3=11.93/filt 10.30
+[04:12:41] param probe jepa_long_s0: {"mass_flow_kg_s": 0.056, "inertia_kg_m2": 0.045, "speed_feedback_m": 0.76, "quad_load_N_m_s2": 0.199, "actuator_tau_s": 0.378, "delay_steps": -0.055}
+[04:12:43] eval recon_long_s0+probe10: test_id=20.91
+[04:12:46] eval recon_long_s0+probe30: test_id=19.66
+[04:12:48] eval recon_long_s0+probe100: test_id=17.01
+[04:13:03] eval recon_long_s0+probe300: test_id=17.31, test_ood=16.18, test_lam0=16.82, test_lam0.5=16.03, test_lam1=17.70, test_lam2=17.56, test_lam3=21.23
+[04:13:16] eval recon_long_s0+probe3000: test_id=16.93
+[04:13:26] eval recon_long_s0+mlp300: test_id=11.63/filt 5.20, test_ood=13.81/filt 4.15, test_lam3=17.25/filt 12.86
+[04:13:27] param probe recon_long_s0: {"mass_flow_kg_s": -0.097, "inertia_kg_m2": -0.037, "speed_feedback_m": 0.734, "quad_load_N_m_s2": 0.16, "actuator_tau_s": -0.102, "delay_steps": -0.081}
+[04:13:39] eval sup_all_long_s0: test_id=7.27, test_ood=11.73, test_lam0=6.78, test_lam0.5=6.70, test_lam1=7.14, test_lam2=8.38, test_lam3=11.08
+[04:13:40] param probe sup_all_long_s0: {"mass_flow_kg_s": 0.012, "inertia_kg_m2": 0.128, "speed_feedback_m": 0.784, "quad_load_N_m_s2": 0.221, "actuator_tau_s": 0.612, "delay_steps": 0.019}
+[05:14:46] {"git_head": "5b3c2a172e0a75f13fd19c5118364dc9770b354e", "python": "3.12.13", "torch": "2.10.0+cu126", "device": "cuda", "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU", "timestamp": "2026-10-12T05:14:46", "agent": "Claude Code (claude-opus-5-5)"}
+[05:15:07] eval sup_n10_long_s0: test_id=40.61, test_ood=50.56, test_lam0=41.06, test_lam0.5=42.11, test_lam1=39.59, test_lam2=40.81, test_lam3=40.66
+[05:15:22] eval jepaft_n10_long_s0: test_id=18.89, test_ood=25.45, test_lam0=19.90, test_lam0.5=20.31, test_lam1=23.05, test_lam2=22.51, test_lam3=23.47
+[05:15:37] eval sup_n30_long_s0: test_id=29.08, test_ood=37.12, test_lam0=28.39, test_lam0.5=29.19, test_lam1=29.36, test_lam2=32.86, test_lam3=36.57
+[05:15:51] eval jepaft_n30_long_s0: test_id=14.02, test_ood=18.00, test_lam0=13.23, test_lam0.5=13.43, test_lam1=14.96, test_lam2=15.82, test_lam3=17.87
+[05:16:05] eval sup_n100_long_s0: test_id=16.95, test_ood=17.96, test_lam0=14.90, test_lam0.5=15.59, test_lam1=18.59, test_lam2=24.31, test_lam3=32.15
+[05:16:20] eval jepaft_n100_long_s0: test_id=11.51, test_ood=14.56, test_lam0=10.45, test_lam0.5=10.30, test_lam1=11.04, test_lam2=12.24, test_lam3=15.80
+[05:16:36] eval sup_n300_long_s0: test_id=14.69, test_ood=17.85, test_lam0=13.31, test_lam0.5=14.45, test_lam1=15.65, test_lam2=18.73, test_lam3=27.47
+[05:16:49] eval jepaft_n300_long_s0: test_id=9.49, test_ood=14.90, test_lam0=9.20, test_lam0.5=9.27, test_lam1=9.68, test_lam2=10.20, test_lam3=12.86

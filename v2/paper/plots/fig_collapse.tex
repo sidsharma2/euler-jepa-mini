@@ -1,0 +1,18 @@
+\documentclass[border=4pt]{standalone}
+\input{common.tex}
+\begin{document}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.6cm}, panel, xlabel={Gradient step}, xmin=0, xmax=1550]
+\nextgroupplot[title={Effective rank of the latent (of 48)}, ylabel={Effective rank}, ymin=0, ymax=20,
+  legend to name=collegend, legend columns=2]
+  \addplot[cRecon, mark=*] table[x=step, y=naive_rank] {\datadir/collapse_naive.csv}; \addlegendentry{Single-stage JEPA, actions in the EMA target}
+  \addplot[cJepa, mark=*] table[x=step, y=two_rank] {\datadir/collapse_twostage.csv}; \addlegendentry{Two-stage JEPA, frozen observation targets}
+  \node[font=\scriptsize, anchor=west, text=cRecon, align=left] at (axis cs:40,15.5) {single-stage: collapses onto\\the command history (rank 2.6)};
+\nextgroupplot[title={Validation speed probe}, rad, ymin=0, ymax=45]
+  \addplot[cRecon, mark=*] table[x=step, y=naive_filter] {\datadir/collapse_naive.csv};
+  \addplot[cJepa, mark=*] table[x=step, y=two_filter] {\datadir/collapse_twostage.csv};
+  \draw[densely dotted, black!50] (axis cs:0,36) -- (axis cs:1550,36) node[pos=0.98, above, font=\scriptsize, anchor=south east] {untrained encoder};
+\end{groupplot}
+\node[anchor=north] at ($(group c1r1.south)!0.5!(group c2r1.south) + (0,-1.0cm)$) {\pgfplotslegendfromname{collegend}};
+\end{tikzpicture}
+\end{document}

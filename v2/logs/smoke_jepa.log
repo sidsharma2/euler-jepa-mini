@@ -1,0 +1,11 @@
+﻿[    0.0s] start
+[    9.3s] numpy
+[   47.5s] torch 2.10.0+cu126
+[   48.1s] ejepa imported
+[   48.9s] train loaded
+[   48.9s] val loaded
+device cuda (3449500468, 4294443008)
+{"step": 1, "roll": 0.63298, "tf": 0.05294, "var": 0.41871, "cov": 0.00259, "loss": 1.10474, "eff_rank": 16.06965, "lr": 0.00067, "elapsed_s": 12.0757, "val_filter_rmse": 36.20458, "val_roll_rmse": 2943.22729}
+{"step": 30, "roll": 0.07483, "tf": 0.21001, "var": 0.05758, "cov": 0.51115, "loss": 0.36286, "eff_rank": 10.72505, "lr": 0.0005, "elapsed_s": 25.80579, "val_filter_rmse": 33.83902, "val_roll_rmse": 176.3022}
+{"step": 60, "roll": 0.07922, "tf": 0.15966, "var": 0.01854, "cov": 0.65403, "loss": 0.28358, "eff_rank": 12.60162, "lr": 0.0, "elapsed_s": 36.00904, "val_filter_rmse": 33.087, "val_roll_rmse": 238.47552}
+jepa time per step 2.11662300825119 max mem MB 393.388544

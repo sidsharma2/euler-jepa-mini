@@ -1,0 +1,11 @@
+[05:06:45] training {'name': 'jepaft_n300_long_s0', 'method': 'jepa_ft', 'seed': 0, 'train': 'train', 'val': 'val', 'labelled': 300, 'lr': 0.0003, 'init_from': 'jepa_long_s0/model.pt', 'rollout_k': 128, 'crop': 320, 'steps': 2000, 'anchors': 8} on cuda
+[05:06:45] init from D:\Research\research-workflow\examples\euler-jepa-mini\v2\runs\jepa_long_s0\model.pt; missing=[]
+[05:06:46] {"step": 1, "ae": 1.09274, "roll": 1.13075, "tf": 1.09372, "consist": 0.046, "loss": 3.36321, "eff_rank": 14.38058, "lr": 1e-05, "elapsed_s": 0.2498, "val_filter_rmse": 108.90553, "val_roll_rmse": 112.35667}
+[05:07:44] {"step": 250, "ae": 0.00282, "roll": 0.01245, "tf": 0.00278, "consist": 0.02509, "loss": 0.04314, "eff_rank": 11.2152, "lr": 0.00029, "elapsed_s": 58.46966, "val_filter_rmse": 5.37647, "val_roll_rmse": 10.60734}
+[05:08:42] {"step": 500, "ae": 0.0015, "roll": 0.01444, "tf": 0.00155, "consist": 0.02692, "loss": 0.0444, "eff_rank": 12.50385, "lr": 0.00026, "elapsed_s": 116.12674, "val_filter_rmse": 4.21896, "val_roll_rmse": 8.77337}
+[05:09:40] {"step": 750, "ae": 0.0016, "roll": 0.00767, "tf": 0.00145, "consist": 0.01849, "loss": 0.02921, "eff_rank": 11.74324, "lr": 0.00021, "elapsed_s": 174.3686, "val_filter_rmse": 5.1267, "val_roll_rmse": 8.81349}
+[05:10:38] {"step": 1000, "ae": 0.00139, "roll": 0.00916, "tf": 0.00138, "consist": 0.02263, "loss": 0.03456, "eff_rank": 12.1911, "lr": 0.00015, "elapsed_s": 232.51389, "val_filter_rmse": 3.75604, "val_roll_rmse": 8.39159}
+[05:11:36] {"step": 1250, "ae": 0.00111, "roll": 0.01191, "tf": 0.00102, "consist": 0.0222, "loss": 0.03624, "eff_rank": 12.01678, "lr": 9e-05, "elapsed_s": 290.34659, "val_filter_rmse": 3.64569, "val_roll_rmse": 8.31323}
+[05:12:34] {"step": 1500, "ae": 0.00069, "roll": 0.00625, "tf": 0.00065, "consist": 0.01567, "loss": 0.02326, "eff_rank": 11.37215, "lr": 4e-05, "elapsed_s": 348.69492, "val_filter_rmse": 3.14242, "val_roll_rmse": 8.28437}
+[05:13:33] {"step": 1750, "ae": 0.00063, "roll": 0.00582, "tf": 0.00057, "consist": 0.01479, "loss": 0.0218, "eff_rank": 11.42557, "lr": 1e-05, "elapsed_s": 407.83552, "val_filter_rmse": 3.08164, "val_roll_rmse": 8.16023}
+[05:14:31] {"step": 2000, "ae": 0.00067, "roll": 0.00431, "tf": 0.00063, "consist": 0.01282, "loss": 0.01843, "eff_rank": 11.98473, "lr": 0.0, "elapsed_s": 465.70971, "val_filter_rmse": 3.03491, "val_roll_rmse": 7.93049}

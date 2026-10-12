@@ -1,0 +1,2 @@
+[01:21:26] training {'name': 'sup_all_s0', 'method': 'sup', 'seed': 0, 'train': 'train', 'val': 'val', 'labelled': 3000} on cuda
+[01:21:26] {"step": 1, "ae": 0.81846, "roll": 1.38373, "tf": 0.81921, "consist": 1.26174, "loss": 4.28315, "eff_rank": 1.63141, "lr": 1e-05, "elapsed_s": 0.15393, "val_filter_rmse": 74.68816, "val_roll_rmse": 126.31181}

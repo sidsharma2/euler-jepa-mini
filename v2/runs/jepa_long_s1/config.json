@@ -1,0 +1,25 @@
+{
+  "method": "jepa",
+  "seed": 1,
+  "steps": 8000,
+  "batch": 32,
+  "lr": 0.001,
+  "weight_decay": 0.0001,
+  "rollout_k": 128,
+  "w_consist": 1.0,
+  "anchors": 8,
+  "warmup": 16,
+  "ema": [
+    0.996,
+    1.0
+  ],
+  "latent_dim": 48,
+  "ctx_dim": 0,
+  "labelled": null,
+  "init_from": "D:\\Research\\research-workflow\\examples\\euler-jepa-mini\\v2\\runs\\jepa1_s1\\encoder.pt",
+  "eval_every": 250,
+  "crop": 320,
+  "stage1_crop": 32,
+  "tag": "jepa_long_s1",
+  "extra": {}
+}

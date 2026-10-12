@@ -1,0 +1,29 @@
+\documentclass[border=4pt]{standalone}
+\input{common.tex}
+\begin{document}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=3 by 1, horizontal sep=1.2cm}, width=5.6cm, height=4.8cm,
+  xlabel={Time (s)}, xmin=0, xmax=4, unbounded coords=jump]
+\nextgroupplot[ylabel={$\omega$ (rad\,s$^{-1}$)}, legend to name=exlegend, legend columns=5]
+  \addplot[black, line width=1.2pt] table[x=t, y=truth] {\datadir/example_1.csv}; \addlegendentry{Truth}
+  \addplot[cGrey, densely dotted, line width=1pt] table[x=t, y=grey] {\datadir/example_1.csv}; \addlegendentry{Grey-box (true ODE)}
+  \addplot[cJepa, dashed] table[x=t, y=jepa] {\datadir/example_1.csv}; \addlegendentry{JEPA WM}
+  \addplot[cRecon, dashed] table[x=t, y=recon] {\datadir/example_1.csv}; \addlegendentry{Reconstruction WM}
+  \addplot[cSup, dashed] table[x=t, y=sup] {\datadir/example_1.csv}; \addlegendentry{Supervised (3000)}
+  \draw[black!40, densely dotted] (axis cs:2,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:2,\pgfkeysvalueof{/pgfplots/ymax});
+\nextgroupplot
+  \addplot[black, line width=1.2pt] table[x=t, y=truth] {\datadir/example_7.csv};
+  \addplot[cGrey, densely dotted, line width=1pt] table[x=t, y=grey] {\datadir/example_7.csv};
+  \addplot[cJepa, dashed] table[x=t, y=jepa] {\datadir/example_7.csv};
+  \addplot[cRecon, dashed] table[x=t, y=recon] {\datadir/example_7.csv};
+  \addplot[cSup, dashed] table[x=t, y=sup] {\datadir/example_7.csv};
+\nextgroupplot
+  \addplot[black, line width=1.2pt] table[x=t, y=truth] {\datadir/example_12.csv};
+  \addplot[cGrey, densely dotted, line width=1pt] table[x=t, y=grey] {\datadir/example_12.csv};
+  \addplot[cJepa, dashed] table[x=t, y=jepa] {\datadir/example_12.csv};
+  \addplot[cRecon, dashed] table[x=t, y=recon] {\datadir/example_12.csv};
+  \addplot[cSup, dashed] table[x=t, y=sup] {\datadir/example_12.csv};
+\end{groupplot}
+\node[anchor=north] at ($(group c2r1.south) + (0,-1.0cm)$) {\pgfplotslegendfromname{exlegend}};
+\end{tikzpicture}
+\end{document}

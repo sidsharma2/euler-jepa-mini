@@ -1,0 +1,3 @@
+[04:10:50] training {'name': 'sup_n10_s0', 'method': 'sup', 'seed': 0, 'train': 'train', 'val': 'val', 'labelled': 10, 'steps': 2000} on cuda
+[04:10:51] {"step": 1, "ae": 0.50698, "roll": 0.84612, "tf": 0.50468, "consist": 1.26204, "loss": 3.11982, "eff_rank": 1.56969, "lr": 2e-05, "elapsed_s": 0.14274, "val_filter_rmse": 74.77342, "val_roll_rmse": 124.3857}
+[04:11:17] {"step": 250, "ae": 0.01339, "roll": 0.0294, "tf": 0.01326, "consist": 0.02717, "loss": 0.08322, "eff_rank": 3.15502, "lr": 0.00096, "elapsed_s": 26.17216, "val_filter_rmse": 31.01066, "val_roll_rmse": 37.20941}

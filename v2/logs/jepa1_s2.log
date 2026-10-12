@@ -1,0 +1,14 @@
+[08:24:57] training {'name': 'jepa1_s2', 'method': 'jepa1', 'seed': 2, 'train': 'train', 'val': 'val', 'steps': 3000} on cuda
+[08:25:21] {"step": 1, "loss": 0.81307, "frame_probe_rmse": 22.47483, "eff_rank": 281.22247, "elapsed_s": 19.9468}
+[08:26:07] {"step": 250, "loss": 0.13173, "frame_probe_rmse": 22.59108, "eff_rank": 152.69122, "elapsed_s": 65.87337}
+[08:26:51] {"step": 500, "loss": 0.12408, "frame_probe_rmse": 22.34602, "eff_rank": 127.40839, "elapsed_s": 110.00419}
+[08:27:34] {"step": 750, "loss": 0.12864, "frame_probe_rmse": 22.1747, "eff_rank": 132.08567, "elapsed_s": 152.47346}
+[08:28:20] {"step": 1000, "loss": 0.12389, "frame_probe_rmse": 20.76163, "eff_rank": 138.83162, "elapsed_s": 198.80757}
+[08:29:07] {"step": 1250, "loss": 0.12995, "frame_probe_rmse": 19.3634, "eff_rank": 145.75938, "elapsed_s": 246.25203}
+[08:29:51] {"step": 1500, "loss": 0.14005, "frame_probe_rmse": 18.45966, "eff_rank": 152.08691, "elapsed_s": 289.65287}
+[08:30:35] {"step": 1750, "loss": 0.12671, "frame_probe_rmse": 17.93669, "eff_rank": 157.20788, "elapsed_s": 333.78792}
+[08:31:19] {"step": 2000, "loss": 0.12426, "frame_probe_rmse": 17.63689, "eff_rank": 160.96914, "elapsed_s": 378.1381}
+[08:32:09] {"step": 2250, "loss": 0.13159, "frame_probe_rmse": 17.47575, "eff_rank": 163.36936, "elapsed_s": 427.50567}
+[08:32:49] {"step": 2500, "loss": 0.13734, "frame_probe_rmse": 17.39908, "eff_rank": 164.65951, "elapsed_s": 467.39477}
+[08:33:28] {"step": 2750, "loss": 0.13939, "frame_probe_rmse": 17.36497, "eff_rank": 165.14479, "elapsed_s": 507.11962}
+[08:34:19] {"step": 3000, "loss": 0.13448, "frame_probe_rmse": 17.36265, "eff_rank": 165.21559, "elapsed_s": 558.03589}

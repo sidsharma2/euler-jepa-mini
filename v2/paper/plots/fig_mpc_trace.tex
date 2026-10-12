@@ -1,0 +1,16 @@
+\documentclass[border=4pt]{standalone}
+\input{common.tex}
+\begin{document}
+\begin{tikzpicture}
+\begin{axis}[colpanel, xlabel={Time (s)}, ylabel={Rotor speed $\omega$ (rad\,s$^{-1}$)}, xmin=1.99, xmax=4,
+  title={Closed-loop set-point tracking at $\lambda=3$ (one test episode)},
+  legend style={at={(0.5,-0.22)}, anchor=north}, legend columns=3]
+  \addplot[black, dashed, line width=0.8pt] table[x=t, y=ref] {\datadir/mpc_trace_lam3.csv}; \addlegendentry{Set-point}
+  \addplot[black, line width=1.2pt] table[x=t, y=oracle] {\datadir/mpc_trace_lam3.csv}; \addlegendentry{Oracle MPC}
+  \addplot[cGrey] table[x=t, y=grey] {\datadir/mpc_trace_lam3.csv}; \addlegendentry{Grey-box MPC}
+  \addplot[cFt] table[x=t, y=ft] {\datadir/mpc_trace_lam3.csv}; \addlegendentry{JEPA + fine-tune MPC (300)}
+  \addplot[cSup!60] table[x=t, y=sup300] {\datadir/mpc_trace_lam3.csv}; \addlegendentry{Supervised MPC (300)}
+  \addplot[cPi] table[x=t, y=pi] {\datadir/mpc_trace_lam3.csv}; \addlegendentry{PI on tracked speed}
+\end{axis}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,19 @@
+\documentclass[border=4pt]{standalone}
+\input{common.tex}
+\begin{document}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.6cm}, panel, xlabel={Gradient step}, ymode=log,
+  rad, logticks, unbounded coords=jump, xmin=0, xmax=8200, scaled x ticks=false,
+  xtick={0,2000,4000,6000,8000}]
+\nextgroupplot[title={Validation filtering error (64-label probe)}, legend to name=trlegend, legend columns=3, ymin=1, ymax=60]
+  \addplot[cJepa, mark=none] table[x=step, y=jepa_val_filter_rmse] {\datadir/training_curves.csv}; \addlegendentry{JEPA WM}
+  \addplot[cRecon, mark=none] table[x=step, y=recon_val_filter_rmse] {\datadir/training_curves.csv}; \addlegendentry{Reconstruction WM}
+  \addplot[cSup, mark=none] table[x=step, y=sup_val_filter_rmse] {\datadir/training_curves.csv}; \addlegendentry{Supervised (3000 labels)}
+\nextgroupplot[title={Validation 1\,s rollout error}, ymin=3, ymax=2000]
+  \addplot[cJepa, mark=none] table[x=step, y=jepa_val_roll_rmse] {\datadir/training_curves.csv};
+  \addplot[cRecon, mark=none] table[x=step, y=recon_val_roll_rmse] {\datadir/training_curves.csv};
+  \addplot[cSup, mark=none] table[x=step, y=sup_val_roll_rmse] {\datadir/training_curves.csv};
+\end{groupplot}
+\node[anchor=north] at ($(group c1r1.south)!0.5!(group c2r1.south) + (0,-1.0cm)$) {\pgfplotslegendfromname{trlegend}};
+\end{tikzpicture}
+\end{document}

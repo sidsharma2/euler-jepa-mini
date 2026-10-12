@@ -1,0 +1,31 @@
+\documentclass[border=4pt]{standalone}
+\input{common.tex}
+% Colour keys used in mpc_<test>.csv -> palette colours.
+\colorlet{c-sup}{cSup}\colorlet{c-grey}{cGrey}\colorlet{c-ft}{cFt}\colorlet{c-jepa}{cJepa}
+\colorlet{c-jepahi}{cHi}\colorlet{c-recon}{cRecon}\colorlet{c-sup300}{cSup!50}\colorlet{c-pi}{cPi}
+% One bar per row of the table, coloured by that row's 'color' key.
+\newcommand{\mpcbars}[1]{%
+  \pgfplotstableread{#1}\tbl
+  \pgfplotstablegetrowsof{\tbl}\pgfmathtruncatemacro{\last}{\pgfplotsretval-1}
+  \foreach \k in {0,...,\last}{%
+    \pgfplotstablegetelem{\k}{color}\of{\tbl}\edef\cc{c-\pgfplotsretval}%
+    \edef\temp{\noexpand\addplot[xbar, bar width=7pt, fill=\cc, draw=none,
+      restrict expr to domain={\noexpand\coordindex}{\k:\k},
+      error bars/.cd, x dir=both, x explicit, error bar style={black, line width=0.5pt}]
+      table[y=y, x=excess, x error plus=err_plus, x error minus=err_minus] {#1};}\temp}}
+\begin{document}
+\begin{tikzpicture}
+\pgfplotstableread{\datadir/mpc_id.csv}\mpcid
+\pgfplotstablegetrowsof{\mpcid}\pgfmathtruncatemacro{\nrows}{\pgfplotsretval-1}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=0.35cm, yticklabels at=edge left},
+  width=6.4cm, height=6.2cm, xmode=log, xmin=1, xmax=8000, y dir=reverse, ymin=-0.6, ymax=\nrows+0.6,
+  ytick={0,...,\nrows}, yticklabels from table={\mpcid}{label}, yticklabel style={font=\scriptsize},
+  xlabel={Excess tracking MSE vs oracle (rad$^2$\,s$^{-2}$)}, minor y tick num=0, ytick style={draw=none},
+  xtick={1,10,100,1000}, xticklabels={1,10,100,1000}]
+\nextgroupplot[title={$\lambda=1$ (training nuisance)}]
+  \mpcbars{\datadir/mpc_id.csv}
+\nextgroupplot[title={$\lambda=3$ (heavy nuisance)}]
+  \mpcbars{\datadir/mpc_lam3.csv}
+\end{groupplot}
+\end{tikzpicture}
+\end{document}

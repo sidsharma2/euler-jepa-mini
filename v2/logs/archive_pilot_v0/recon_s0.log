@@ -1,0 +1,4 @@
+[23:11:20] training {'name': 'recon_s0', 'method': 'recon', 'seed': 0, 'train': 'train', 'val': 'val'} on cuda
+[23:13:06] {"step": 1, "ae": 0.89681, "roll": 0.8899, "tf": 0.89649, "loss": 2.6832, "eff_rank": 16.70997, "lr": 2e-05, "elapsed_s": 9.20891, "val_filter_rmse": 36.1328, "val_roll_rmse": 3125.66748}
+[23:23:25] {"step": 250, "ae": 0.05461, "roll": 0.12566, "tf": 0.06738, "loss": 0.24764, "eff_rank": 20.44367, "lr": 0.00098, "elapsed_s": 631.71274, "val_filter_rmse": 34.8284, "val_roll_rmse": 517.32782}
+[23:34:10] {"step": 500, "ae": 0.0292, "roll": 0.1026, "tf": 0.04584, "loss": 0.17763, "eff_rank": 25.03199, "lr": 0.0009, "elapsed_s": 1274.68515, "val_filter_rmse": 35.64661, "val_roll_rmse": 233.85025}

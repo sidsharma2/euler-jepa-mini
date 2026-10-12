@@ -1,0 +1,29 @@
+\documentclass[border=4pt]{standalone}
+\input{common.tex}
+\begin{document}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=1.6cm}, panel, xmode=log, ymode=log,
+  xlabel={Forecast horizon (s)}, rad, xmin=0.08, xmax=2.5, ymin=1.5, ymax=90,
+  log basis x=10, xtick={0.1,0.25,0.5,1,2}, xticklabels={0.1,0.25,0.5,1,2}, logticks]
+\nextgroupplot[title={In distribution}, legend to name=horizonlegend, legend columns=4]
+  \addplot[cNominal, dashed, mark=o] table[x=h, y=nominal] {\datadir/horizon_test_id.csv}; \addlegendentry{Nominal physics}
+  \addplot[cPersist, dashed, mark=o] table[x=h, y=persistence] {\datadir/horizon_test_id.csv}; \addlegendentry{Persistence}
+  \addplot[cGrey, mark=square*] table[x=h, y=greybox] {\datadir/horizon_test_id.csv}; \addlegendentry{Tracker + grey-box (true ODE)}
+  \bandplot{\datadir/horizon_test_id.csv}{h}{recon}{cRecon}{Reconstruction WM (300-label probe)}
+  \bandplot{\datadir/horizon_test_id.csv}{h}{jepa}{cJepa}{JEPA WM (300-label probe)}
+  \bandplot{\datadir/horizon_test_id.csv}{h}{ft}{cFt}{JEPA + fine-tune (300 labels)}
+  \bandplot{\datadir/horizon_test_id.csv}{h}{sup300}{cSup!55}{Supervised (300 labels)}
+  \bandplot{\datadir/horizon_test_id.csv}{h}{sup}{cSup}{Supervised (3000 labels)}
+\nextgroupplot[title={Held-out regime (higher $c_2$, $J$)}]
+  \addplot[cNominal, dashed, mark=o, forget plot] table[x=h, y=nominal] {\datadir/horizon_test_ood.csv};
+  \addplot[cPersist, dashed, mark=o, forget plot] table[x=h, y=persistence] {\datadir/horizon_test_ood.csv};
+  \addplot[cGrey, mark=square*, forget plot] table[x=h, y=greybox] {\datadir/horizon_test_ood.csv};
+  \bandplotnl{\datadir/horizon_test_ood.csv}{h}{recon}{cRecon}
+  \bandplotnl{\datadir/horizon_test_ood.csv}{h}{jepa}{cJepa}
+  \bandplotnl{\datadir/horizon_test_ood.csv}{h}{ft}{cFt}
+  \bandplotnl{\datadir/horizon_test_ood.csv}{h}{sup300}{cSup!55}
+  \bandplotnl{\datadir/horizon_test_ood.csv}{h}{sup}{cSup}
+\end{groupplot}
+\node[anchor=north] at ($(group c1r1.south)!0.5!(group c2r1.south) + (0,-1.0cm)$) {\pgfplotslegendfromname{horizonlegend}};
+\end{tikzpicture}
+\end{document}

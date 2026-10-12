@@ -1,0 +1,17 @@
+\documentclass[border=4pt]{standalone}
+\input{common.tex}
+\begin{document}
+\begin{tikzpicture}
+\pgfplotstableread{\datadir/hybrid.csv}\hyb
+\begin{axis}[width=12cm, height=5.6cm, ybar, bar width=6.5pt, ymin=0, ylabel={2\,s forecast RMSE (rad\,s$^{-1}$)},
+  xtick={0,...,4}, xticklabels from table={\hyb}{label}, xmin=-0.6, xmax=4.6, minor tick num=0,
+  title={JEPA perception + physics dynamics (seed 0)}, legend style={at={(0.5,-0.18)}, anchor=north}, legend columns=3,
+  unbounded coords=discard]
+  \addplot[fill=cGrey, draw=none] table[x=x, y=grey] {\hyb}; \addlegendentry{Tracker + grey-box (fit from $t=0$)}
+  \addplot[fill=cGrey!45, draw=none] table[x=x, y=hyb_tracker] {\hyb}; \addlegendentry{Tracker + grey-box (fit from $t=0.3$\,s)}
+  \addplot[fill=cHybrid, draw=none] table[x=x, y=hyb_jepa] {\hyb}; \addlegendentry{Hybrid: JEPA belief + grey-box}
+  \addplot[fill=cHybrid!45, draw=none] table[x=x, y=hyb_ft] {\hyb}; \addlegendentry{Hybrid: JEPA+FT belief + grey-box}
+  \addplot[fill=cJepa, draw=none] table[x=x, y=jepa_wm] {\hyb}; \addlegendentry{JEPA world model alone}
+\end{axis}
+\end{tikzpicture}
+\end{document}

@@ -1,0 +1,18 @@
+# Regenerable dataset cache (deterministic seeds; `python make_data.py` rebuilds it, ~640 MB)
+cache/
+
+# Model checkpoints (retrain with `python run_v2.py train`; configs and histories are kept)
+*.pt
+logs/archive_pilot_v0/runs_pilot/
+
+# LaTeX build products
+*.aux
+*.bbl
+*.blg
+*.out
+*.synctex.gz
+paper/plots/*.log
+paper/plots/*.pdf
+paper/*.log
+reports/*.log
+figures/*.log

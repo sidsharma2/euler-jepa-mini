@@ -1,0 +1,36 @@
+[04:23:20] {"git_head": "5b3c2a172e0a75f13fd19c5118364dc9770b354e", "python": "3.12.13", "torch": "2.10.0+cu126", "device": "cuda", "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU", "timestamp": "2026-10-12T04:23:20", "agent": "Claude Code (claude-opus-5-5)"}
+[04:23:31] PI gains tuned on validation: Kp=0.004, Ki=0.01 (val rmse 19.35)
+[04:24:23] mpc oracle: {'controller': 'oracle', 'tracking_rmse': 14.998128289984564, 'tracking_rmse_ci_lo': 13.318168088192627, 'tracking_rmse_ci_hi': 16.64744299723364, 'steady_rmse': 6.631097763842677, 'control_tv': 0.6096249177153966, 'wall_s': 26.124550819396973}
+[04:30:16] mpc greybox: {'controller': 'greybox', 'tracking_rmse': 15.2163590148633, 'tracking_rmse_ci_lo': 13.569255083346329, 'tracking_rmse_ci_hi': 16.8181417877943, 'steady_rmse': 7.258571249955796, 'control_tv': 0.6358085779205636, 'wall_s': 353.6577715873718}
+[04:30:18] mpc pi: {'controller': 'pi', 'tracking_rmse': 23.859794714487776, 'tracking_rmse_ci_lo': 21.300727185958035, 'tracking_rmse_ci_hi': 26.454979332175657, 'steady_rmse': 12.244893726643307, 'control_tv': 0.9084147205096345, 'wall_s': 1.586355209350586}
+[04:30:34] mpc jepa_s0: {'controller': 'jepa_s0', 'tracking_rmse': 15.531241887375698, 'tracking_rmse_ci_lo': 13.76540351423826, 'tracking_rmse_ci_hi': 17.18843771010342, 'steady_rmse': 7.809831277954673, 'control_tv': 0.8575835994791365, 'wall_s': 16.22023034095764}
+[04:30:51] mpc jepa_long_s0: {'controller': 'jepa_long_s0', 'tracking_rmse': 15.259535582371836, 'tracking_rmse_ci_lo': 13.548583587644911, 'tracking_rmse_ci_hi': 16.900421142644955, 'steady_rmse': 7.453792665465733, 'control_tv': 0.7661284875733247, 'wall_s': 16.569020986557007}
+[04:31:07] mpc recon_s0: {'controller': 'recon_s0', 'tracking_rmse': 15.799765662855238, 'tracking_rmse_ci_lo': 14.05376971398637, 'tracking_rmse_ci_hi': 17.453947386287002, 'steady_rmse': 8.957017827033804, 'control_tv': 0.8526784363676215, 'wall_s': 15.881248235702515}
+[04:31:23] mpc recon_long_s0: {'controller': 'recon_long_s0', 'tracking_rmse': 15.735862670051224, 'tracking_rmse_ci_lo': 14.05794774725021, 'tracking_rmse_ci_hi': 17.353320504533915, 'steady_rmse': 8.881280320336668, 'control_tv': 0.7956374828647012, 'wall_s': 16.625889539718628}
+[04:31:37] mpc sup_all_s0: {'controller': 'sup_all_s0', 'tracking_rmse': 15.260236765853653, 'tracking_rmse_ci_lo': 13.579626784928479, 'tracking_rmse_ci_hi': 16.866545728601004, 'steady_rmse': 7.746326433783379, 'control_tv': 0.845308786392031, 'wall_s': 14.339698314666748}
+[04:31:51] mpc sup_all_long_s0: {'controller': 'sup_all_long_s0', 'tracking_rmse': 15.126655516623824, 'tracking_rmse_ci_lo': 13.437448567864339, 'tracking_rmse_ci_hi': 16.76902895059562, 'steady_rmse': 6.81666623458137, 'control_tv': 0.6845857974605285, 'wall_s': 13.573697328567505}
+[05:17:08] {"git_head": "5b3c2a172e0a75f13fd19c5118364dc9770b354e", "python": "3.12.13", "torch": "2.10.0+cu126", "device": "cuda", "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU", "timestamp": "2026-10-12T05:17:08", "agent": "Claude Code (claude-opus-5-5)"}
+[05:17:23] PI gains tuned on validation: Kp=0.004, Ki=0.01 (val rmse 19.35)
+[05:18:23] mpc[test_id] oracle: track 15.00 steady 6.63 excess 0.0 [0.0, 0.0] rad^2/s^2
+[05:25:38] mpc[test_id] greybox: track 15.22 steady 7.26 excess 6.6 [2.9, 11.2] rad^2/s^2
+[05:25:40] mpc[test_id] pi: track 23.86 steady 12.24 excess 344.3 [257.8, 442.3] rad^2/s^2
+[05:25:55] mpc[test_id] jepa_s0: track 15.53 steady 7.81 excess 16.3 [8.3, 27.5] rad^2/s^2
+[05:26:12] mpc[test_id] jepa_long_s0: track 15.26 steady 7.45 excess 7.9 [3.5, 12.9] rad^2/s^2
+[05:26:29] mpc[test_id] recon_s0: track 15.80 steady 8.96 excess 24.7 [10.6, 48.0] rad^2/s^2
+[05:26:46] mpc[test_id] recon_long_s0: track 15.74 steady 8.88 excess 22.7 [9.2, 44.8] rad^2/s^2
+[05:27:00] mpc[test_id] sup_all_s0: track 15.26 steady 7.75 excess 7.9 [3.9, 12.3] rad^2/s^2
+[05:27:13] mpc[test_id] sup_all_long_s0: track 15.13 steady 6.82 excess 3.9 [1.3, 6.6] rad^2/s^2
+[05:27:27] mpc[test_id] sup_n300_long_s0: track 15.72 steady 8.25 excess 22.2 [16.4, 28.6] rad^2/s^2
+[05:27:42] mpc[test_id] jepaft_n300_long_s0: track 15.25 steady 7.51 excess 7.7 [3.7, 12.3] rad^2/s^2
+[05:27:53] PI gains tuned on validation: Kp=0.004, Ki=0.02 (val rmse 30.86)
+[05:28:46] mpc[test_lam3] oracle: track 14.69 steady 6.50 excess 0.0 [0.0, 0.0] rad^2/s^2
+[05:35:37] mpc[test_lam3] greybox: track 15.18 steady 7.54 excess 14.5 [4.6, 27.7] rad^2/s^2
+[05:35:38] mpc[test_lam3] pi: track 51.57 steady 54.25 excess 2443.6 [583.9, 5606.9] rad^2/s^2
+[05:35:54] mpc[test_lam3] jepa_s0: track 17.04 steady 10.98 excess 74.7 [38.9, 123.4] rad^2/s^2
+[05:36:12] mpc[test_lam3] jepa_long_s0: track 15.95 steady 9.45 excess 38.6 [18.5, 69.9] rad^2/s^2
+[05:36:29] mpc[test_lam3] recon_s0: track 16.73 steady 10.78 excess 64.0 [28.9, 120.9] rad^2/s^2
+[05:36:46] mpc[test_lam3] recon_long_s0: track 17.37 steady 12.40 excess 85.8 [29.2, 185.9] rad^2/s^2
+[05:36:59] mpc[test_lam3] sup_all_s0: track 16.19 steady 9.35 excess 46.3 [25.5, 71.7] rad^2/s^2
+[05:37:13] mpc[test_lam3] sup_all_long_s0: track 15.38 steady 7.62 excess 20.8 [11.7, 31.8] rad^2/s^2
+[05:37:27] mpc[test_lam3] sup_n300_long_s0: track 20.97 steady 17.83 excess 224.1 [119.5, 357.0] rad^2/s^2
+[05:37:41] mpc[test_lam3] jepaft_n300_long_s0: track 15.63 steady 8.41 excess 28.6 [19.2, 39.1] rad^2/s^2

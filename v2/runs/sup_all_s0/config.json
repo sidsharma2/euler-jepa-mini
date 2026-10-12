@@ -1,0 +1,24 @@
+{
+  "method": "sup",
+  "seed": 0,
+  "steps": 6000,
+  "batch": 32,
+  "lr": 0.001,
+  "weight_decay": 0.0001,
+  "rollout_k": 64,
+  "w_consist": 1.0,
+  "anchors": 24,
+  "warmup": 16,
+  "ema": [
+    0.996,
+    1.0
+  ],
+  "latent_dim": 48,
+  "labelled": 3000,
+  "init_from": null,
+  "eval_every": 250,
+  "crop": 200,
+  "stage1_crop": 32,
+  "tag": "sup_all_s0",
+  "extra": {}
+}

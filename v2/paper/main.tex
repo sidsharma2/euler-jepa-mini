@@ -1,0 +1,215 @@
+\documentclass[10pt,journal]{IEEEtran}
+\usepackage[T1]{fontenc}
+\usepackage{newtxtext,newtxmath}
+\usepackage{amsmath,booktabs,graphicx,siunitx,hyperref,fancyhdr,xcolor,cite}
+\sisetup{detect-all}
+\hypersetup{hidelinks}
+\graphicspath{{figures/}}
+\fancypagestyle{paper}{\fancyhf{}\fancyfoot[R]{\thepage}\renewcommand{\headrulewidth}{0pt}}
+\fancypagestyle{IEEEtitlepagestyle}{\fancyhf{}\fancyfoot[R]{\thepage}\renewcommand{\headrulewidth}{0pt}}
+\pagestyle{paper}
+\input{data/numbers.tex}
+\newcommand{\tablefile}[1]{\IfFileExists{../results/tables/#1.tex}{\input{../results/tables/#1.tex}}{\textit{(table #1 pending)}}}
+\newcommand{\pending}[1]{\textcolor{red}{[PENDING: #1]}}
+
+\begin{document}
+\title{Hearing the Rotor: Action-Conditioned Joint-Embedding World Models for Label-Efficient, Nuisance-Robust Turbomachinery Forecasting and Control}
+\author{Siddharth Sharma$^{\dagger}$%
+\thanks{$^{\dagger}$Corresponding author: sid.sharma@ubc.ca. This study was carried out with an AI coding agent (Claude Code, model claude-opus-5-5) under the author's direction. All data are synthetic; no result validates an engine, sensor or controller. Code, data generators, logs and every plotted number are in the project repository.}}
+\maketitle
+
+\begin{abstract}
+A previous audit of joint-embedding predictive architectures (JEPA) for rotor dynamics returned a negative result. We show that it was mostly structural. Speed was observed directly, the latent prediction never reached the forecast, and constant commands made control authority unidentifiable. We rebuild the benchmark around the problem JEPA is designed for. A rotor driven by Euler turbomachinery work, with a lagged and delayed actuator and six hidden per-episode parameters, is observed only through a synthetic casing-microphone spectrogram containing distractor tones, impulsive bursts and gain drift. A two-stage, action-conditioned JEPA learns from 3000 unlabelled episodes. Masked time--frequency latent prediction first pre-trains the encoder; a frozen-target, action-conditioned predictor then learns the dynamics in latent space. Against a reconstruction world model, supervised learning with 10--3000 labelled episodes, and a classical pipeline given the true equation of motion, under matched budgets, the JEPA world model has three advantages. With ten labelled episodes, a frozen JEPA latent forecasts rotor speed \nLabelRatioTen$\times$ better than supervised training from scratch. Under heavy acoustic nuisance its forecast error grows by about a quarter, while the classical pipeline's more than triples. Planning in its latent space tracks set-points close to an oracle controller: with 300 labels, pre-training reduces the excess closed-loop error \nMpcRatioId$\times$ at the training nuisance level and \nMpcRatioLamThree$\times$ under heavy nuisance. The classical pipeline remains the most accurate in distribution, and the latent recovers state far better than it identifies the hidden machine parameters. We report the failure modes met along the way, including an action-shortcut collapse, and a set of second-round improvements.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Joint-embedding predictive architecture, world models, self-supervised learning, turbomachinery, model predictive control, system identification, acoustic sensing.
+\end{IEEEkeywords}
+
+\section{Introduction}
+\IEEEPARstart{G}{as}-turbine and turbomachinery transients are usually modelled with physics: the Euler work equation turns blade swirl into torque, and an angular-momentum balance closes the rotor speed~\cite{dixon2010fluid}. Physics models extrapolate well when their structure and parameters are right. They are brittle when the parameters drift, when the sensors are poor, or when the quantity of interest is not measured at all. Learned models are the opposite: they are flexible, but they need labels and fail silently out of distribution~\cite{karniadakis2021piml}.
+
+Joint-embedding predictive architectures (JEPA)~\cite{lecun2022path,assran2023ijepa,bardes2024vjepa} learn by predicting the \emph{representation} of missing or future observations rather than the observations themselves. The bet is that representation-space prediction can ignore unpredictable nuisance and keep the structure that matters. V-JEPA~2-AC~\cite{assran2025vjepa2} extended the idea to action-conditioned world models that plan in latent space. That combination---label-free learning, robustness to nuisance, and planning---is exactly what a test cell with plentiful unlabelled sensor logs and few instrumented runs would want.
+
+An earlier audit of a small JEPA rotor model (v1 of this project) found no advantage. Re-reading that implementation shows why the result was structural rather than informative:
+\begin{enumerate}
+\item speed was observed directly and noise-free, leaving nothing for representation learning to do;
+\item the latent prediction entered only as a 0.05-weighted auxiliary loss, while a separate head produced the forecast, so the JEPA objective could not improve it;
+\item the command was constant within each sequence, so control authority was unidentifiable and every learned model was control-insensitive;
+\item the full-trajectory protocol paired initial speeds near \SI{400}{\radian\per\second} with an equilibrium near \SI{21}{\radian\per\second}, so every sequence was a spin-down.
+\end{enumerate}
+
+This paper keeps the physics and the honesty of that audit, but asks the question JEPA is built for. Our contributions are:
+\begin{itemize}
+\item a partially observed, action-driven rotor benchmark with hidden per-episode parameters and a declared acoustic observation model (Sec.~\ref{sec:bench});
+\item a two-stage action-conditioned JEPA world model for this setting, and controls that differ from it only in the training objective (Sec.~\ref{sec:method});
+\item an evaluation of state estimation, forecasting, robustness, label efficiency, control authority, parameter recovery and closed-loop control against a structure-aware classical pipeline (Sec.~\ref{sec:results});
+\item a record of the failure modes met during development and of second-round improvements, including a JEPA-perception/physics-dynamics hybrid (Secs.~\ref{sec:failures}--\ref{sec:round2}).
+\end{itemize}
+
+\section{Related work}
+\emph{Joint-embedding prediction.} I-JEPA predicts masked image-patch representations from an EMA target encoder~\cite{assran2023ijepa}; V-JEPA does the same in video~\cite{bardes2024vjepa}, and A-JEPA on audio spectrograms~\cite{fei2023ajepa}. Collapse is avoided through predictor asymmetry and EMA targets~\cite{grill2020byol}, or through variance--covariance regularisation~\cite{bardes2022vicreg}. V-JEPA~2-AC freezes a pre-trained encoder and trains an action-conditioned predictor with teacher-forcing and rollout losses, then plans by cross-entropy-method (CEM) MPC in latent space~\cite{assran2025vjepa2,rubinstein1999cem}.
+\emph{Latent world models.} PlaNet and Dreamer learn latent dynamics by reconstructing observations~\cite{hafner2019planet}. SPR and TD-MPC2 learn self-predictive latents without reconstruction; TD-MPC2's latent-consistency loss keeps long rollouts on the encoder manifold~\cite{schwarzer2021spr,hansen2024tdmpc2}. Context-aware dynamics models condition the predictor on an embedding of recent transitions~\cite{lee2020cadm}.
+\emph{Physics and identification.} Grey-box system identification fits a known model structure to data~\cite{ljung1999system}; physics-informed learning blends the two approaches~\cite{karniadakis2021piml}. We use a harmonic-comb tracker with Viterbi smoothing~\cite{forney1973viterbi} followed by output-error identification of the \emph{true} equation as a deliberately strong classical baseline.
+
+\section{Benchmark}\label{sec:bench}
+\subsection{Truth model}
+The rotor balance follows from Euler work, $\Delta h_0=U\Delta C_\theta$ with $U=r\omega$, and the angular-momentum balance, extended with a lagged, delayed actuator:
+\begin{equation}
+J\dot\omega=\dot m r(k_u a-k_\omega\omega)-c_0-c_2\omega^2,\qquad \tau_a\dot a=u(t-d\,\Delta t)-a,
+\label{eq:truth}
+\end{equation}
+with $r=\SI{0.25}{\metre}$, $k_u=\SI{100}{\metre\per\second}$, $c_0=\SI{0.15}{\newton\metre}$ and $\Delta t=\SI{10}{\milli\second}$. Six parameters are drawn per episode and never shown to the learned models: $\dot m\in[0.70,0.90]$\,\si{\kilogram\per\second}, $J\in[0.017,0.023]$\,\si{\kilogram\metre\squared}, $k_\omega\in[0.12,0.18]$\,\si{\metre}, $c_2\in[0,1.5]\times10^{-5}$\,\si{\newton\metre\second\squared}, $\tau_a\in[0.03,0.25]$\,\si{\second} and $d\in\{0,\dots,4\}$ samples. Equilibrium speeds span about 130--\SI{740}{\radian\per\second} and $J/(\dot m r k_\omega)$ is 0.5--\SI{1}{\second}. The held-out regime moves $J$ to $[0.023,0.028]$ and $c_2$ to $[1.5,3]\times10^{-5}$. Commands are piecewise-constant or ramped excitation held for 0.15--\SI{0.8}{\second}. Equation~\eqref{eq:truth} is integrated by RK4 with ten substeps per sample under zero-order hold. Unit tests verify the exact first-order solution in the linear limit, the equilibrium fixed point, the exact delay shift and sample-exact regeneration of stored episodes.
+
+\subsection{Observation model}
+Every \SI{10}{\milli\second} the models receive a 64-bin log-power spectrum (0--\SI{3.2}{\kilo\hertz}) of a synthetic casing microphone (Fig.~\ref{fig:problem}). It contains three blade-passing harmonics at $hN_b\omega/2\pi$ ($N_b=11$), whose level follows a fan-law speed term plus a steady-loading term in the Euler torque. It also contains speed-dependent pink flow noise and $\chi^2_8$ periodogram fluctuation. Nuisance of level $\lambda$ adds distractor tones that appear at random frequencies, drift and switch off; impulsive broadband bursts; and calibration offsets with slow gain drift. Speed is never an input. This is a declared model of tacholess speed sensing, not a calibrated machine.
+
+\begin{figure}[!t]\centering
+\includegraphics[width=\columnwidth]{fig_problem.pdf}
+\caption{One test episode. Top: the model input, with the hidden blade-passing harmonics overlaid for illustration. Bottom: the hidden rotor speed and the known command. Forecasts start at $t=\SI{2}{\second}$.}
+\label{fig:problem}
+\end{figure}
+
+\subsection{Splits and protocol}
+There are 3000 training and 300 validation episodes, and 300-episode test sets for the training distribution, the held-out regime and $\lambda\in\{0,0.5,1,2,3\}$. Each episode lasts \SI{4}{\second}. Models see the first \SI{2}{\second} of spectra and commands, then forecast the next \SI{2}{\second} open loop under the known future commands. Test sets are used only for reported numbers; checkpoint selection, probe regularisation and controller tuning use validation data.
+
+\section{Methods}\label{sec:method}
+\subsection{Two-stage action-conditioned JEPA}
+\emph{Stage 1} pre-trains a causal time--frequency CNN trunk $T_\theta$ (three $3\times5$ convolutions, causal in time) by masked latent prediction on 32-frame crops. Two or three time--frequency blocks and the final 3--8 frames are masked. A convolutional predictor maps the context features to the EMA trunk's per-position, layer-normalised features at the masked cells:
+\begin{equation}
+\mathcal L_1=\frac{1}{|M|}\sum_{(t,f)\in M}\big\lVert g_\psi(T_\theta(x\odot\bar M))_{tf}-\mathrm{LN}(T_{\bar\theta}(x))_{tf}\big\rVert_1,
+\end{equation}
+with $\bar\theta\leftarrow m\bar\theta+(1-m)\theta$ and $m$ following a cosine schedule from 0.996 to 1. There are no actions and no labels in this stage.
+
+\emph{Stage 2} freezes the trunk. A trainable spatial-soft-argmax readout~\cite{finn2016spatial} and a GRU turn the trunk features and past commands into a layer-normalised belief $z_t\in\mathbb R^{48}$. A residual predictor $z_{t+1}=\mathrm{LN}(z_t+f_\phi(z_t,u_t))$ is rolled out for $K$ steps, and a head $q$ must match the frozen, frequency-pooled trunk maps $y_{t+k}$ of the future frames:
+\begin{equation}
+\mathcal L_2=\sum_{k=0}^{K}\big\lVert q(P^k_\phi(z_t,u_{t:t+k}))-y_{t+k}\big\rVert_1+\beta\sum_{k=1}^{K}\big\lVert P^k_\phi(z_t,\cdot)-\mathrm{sg}(z_{t+k})\big\rVert_2^2,
+\end{equation}
+plus one-step teacher forcing. The second term is TD-MPC2's latent consistency~\cite{hansen2024tdmpc2}, $\beta=1$, applied identically to every learned method. The main configuration uses $K=128$ (\SI{1.28}{\second}) on \SI{3.2}{\second} training crops. Because the targets come from a frozen observation-only trunk, the latent cannot collapse onto the command history (Sec.~\ref{sec:failures}).
+
+\emph{Read-out and use.} Speed is decoded by a frozen ridge probe, or an MLP probe where stated, fitted on $N$ labelled training episodes. Forecasts decode open-loop latent rollouts through the same probe. Control authority $\partial\hat\omega/\partial u$ is a central finite difference through the rollout. Planning uses CEM-MPC in latent space with a \SI{0.5}{\second} horizon. \emph{JEPA + fine-tune} trains the whole JEPA world model on the supervised loss below.
+
+\begin{figure*}[!t]\centering
+\includegraphics[width=0.86\textwidth]{fig_architecture.pdf}
+\caption{Two-stage action-conditioned JEPA. Stage 1 learns spectrogram features by masked latent prediction. Stage 2 freezes them and learns action-conditioned latent dynamics by predicting future frozen feature maps. A few labels then suffice for a probe that supports forecasting and latent-space MPC.}
+\label{fig:arch}
+\end{figure*}
+
+\subsection{Controls}
+All learned controls share the trunk architecture, readout, belief encoder, predictor, optimiser (AdamW, cosine schedule), batch, crops, rollout length, consistency term and step budget. They differ only in the training signal:
+\begin{itemize}
+\item \emph{Reconstruction world model}: every encoded and predicted latent is decoded back to the 64-bin spectrum (MSE), i.e.\ observation prediction~\cite{hafner2019planet}.
+\item \emph{Supervised}: the true speed is regressed from every encoded and predicted latent, with 10--3000 labelled episodes and early stopping on labelled validation error. This is the only method given label-based checkpoint selection.
+\item \emph{Classical pipeline}: a three-harmonic comb tracker with Viterbi smoothing under a slew limit, tuned on validation, is followed by batched output-error identification of the \emph{true} form of \eqref{eq:truth} with a delay search, and then by simulation. This pipeline is given knowledge the learned models do not have.
+\end{itemize}
+We also report nominal physics with catalogue parameters, persistence, an oracle with the true parameters and state, a PI controller on the tracked speed with gains tuned on validation, and a random-encoder probe.
+
+\section{Results}\label{sec:results}
+Unless stated otherwise, errors are rotor-speed RMSE in \si{\radian\per\second} over 300 test episodes, with the mean $\pm$ s.d.\ over \nSeeds{} seeds for the main configuration and seed-0 runs for ablations.
+
+\subsection{Forecasting and state estimation}
+Table~\ref{tab:main} and Fig.~\ref{fig:horizon} summarise accuracy. The oracle reproduces the stored trajectories exactly, which verifies the protocol. Nominal physics (\nNominalH{} at \SI{2}{\second}) shows how much the hidden parameters matter. With a 300-label linear probe, the JEPA world model forecasts \SI{2}{\second} ahead with \nJepaH{}, against \nReconH{} for the reconstruction world model trained identically; with MLP probes the figures are \nJepaMlpH{} and \nReconMlpH{}. JEPA + fine-tune reaches \nFtThreeH{} with 300 labels, against \nSupThreeH{} for supervised training from scratch on the same labels. Full supervision with 3000 labels reaches \nSupAllH{}. The classical pipeline, given the exact equation, remains the most accurate in distribution at \nGreyH{}. For state estimation, the MLP-probed JEPA belief (\nJepaMlpFilt{}) is on par with the hand-built tracker (\nTrackerFilt{}).
+
+\begin{table*}[!t]\centering\scriptsize
+\caption{Main results. Rotor-speed RMSE in \si{\radian\per\second} (mean $\pm$ s.d.\ over seeds), RMS torque residual of the forecast under the true parameters in \si{\newton\metre}, and median relative error of the \SI{2}{\second} control gain.}
+\label{tab:main}
+\tablefile{main}
+\end{table*}
+
+\begin{figure*}[!t]\centering
+\includegraphics[width=0.92\textwidth]{fig_horizon.pdf}
+\caption{Forecast error against horizon, in distribution (left) and in the held-out regime (right). Bands span seeds.}
+\label{fig:horizon}
+\end{figure*}
+
+\subsection{Label efficiency}
+Fig.~\ref{fig:labels} shows the result that matters most for a test cell, where unlabelled acoustic logs are cheap and tachometer-instrumented runs are not. With ten labelled episodes, a linear probe on the frozen JEPA latent forecasts with \nJepaProbeTen{}, against \nSupTen{} for the same network trained from scratch on those ten episodes (\nLabelRatioTen$\times$). JEPA pre-training followed by fine-tuning beats supervised training at every budget up to 300 episodes. Supervision overtakes the frozen probe only when labels are plentiful.
+
+\begin{figure*}[!t]\centering
+\includegraphics[width=0.92\textwidth]{fig_labels.pdf}
+\caption{Filtering and \SI{2}{\second} forecast error against the number of speed-labelled training episodes. The self-supervised models also see all 3000 unlabelled episodes.}
+\label{fig:labels}
+\end{figure*}
+
+\subsection{Robustness to nuisance and regime shift}
+The comb tracker locks onto distractor tones once they are frequent (Fig.~\ref{fig:nuisance}, $\lambda\geq2$). As a result the classical forecast degrades from \nGreyLamZero{} at $\lambda=0$ to \nGreyLamThree{} at $\lambda=3$. The JEPA world model, trained only at $\lambda=1$, degrades from \nJepaLamZero{} to \nJepaLamThree{}; the reconstruction world model reaches \nReconLamThree{}. With 300 labels, JEPA + fine-tune holds \nFtThreeLamThree{} at $\lambda=3$, while supervised training from scratch reaches \nSupThreeLamThree{}. In the held-out dynamical regime the JEPA forecast rises to \nJepaOOD{} and the grey-box to \nGreyOOD{}.
+
+\begin{figure*}[!t]\centering
+\includegraphics[width=0.92\textwidth]{fig_nuisance.pdf}
+\caption{Filtering and forecast error against test nuisance $\lambda$ (dotted line: training level). Learned models are trained at $\lambda=1$ unless marked.}
+\label{fig:nuisance}
+\end{figure*}
+
+\subsection{Control authority and hidden parameters}
+Every learned model now reproduces the plant's step response to a command change (Fig.~\ref{fig:step}), the property whose absence was the main v1 failure. The median relative error of the \SI{2}{\second} gain is \nGainJepa{} for JEPA, \nGainRecon{} for reconstruction, \nGainSup{} for full supervision and \nGainGrey{} for the grey-box. This follows from training on time-varying commands, not from an architectural trick. Linear probes on $z_{t=\SI{2}{\second}}$ (Fig.~\ref{fig:probes}) recover the steady-state gain well ($R^2$ of \nRtwoKwJepa{} for $k_\omega$) and the actuator lag partly (\nRtwoTauJepa{}; \nRtwoTauSup{} for supervision). They recover almost nothing of the inertia ($R^2$ of \nRtwoJJepa{}), mass flow or delay. The latent captures \emph{state} better than it \emph{identifies the machine}, and this is the main reason the true-structure grey-box still wins on long in-distribution forecasts.
+
+\begin{figure*}[!t]\centering
+\includegraphics[width=0.92\textwidth]{fig_step.pdf}
+\caption{Left: model step responses $\partial\hat\omega/\partial u$ (dashed) against simulator finite differences (black) for three test episodes. Right: median and interquartile range of the relative error of the \SI{2}{\second} gain over the test set.}
+\label{fig:step}
+\end{figure*}
+
+\begin{figure}[!t]\centering
+\includegraphics[width=\columnwidth]{fig_probes.pdf}
+\caption{Linear-probe $R^2$ for the six hidden parameters from the belief at $t=\SI{2}{\second}$ (300 labelled episodes).}
+\label{fig:probes}
+\end{figure}
+
+\subsection{Closed-loop control by planning in latent space}
+CEM-MPC controllers that differ only in their model track moderate set-point steps from the spectrogram alone (Fig.~\ref{fig:mpc}). We report excess tracking MSE over an oracle controller with paired bootstrap intervals over 40 episodes. Planning through the JEPA latent with a 300-label probe gives an excess of \nMpcJepaId{}\,\si{\radian\squared\per\second\squared}, close to the true-structure grey-box (\nMpcGreyId{}). With 300 labels, JEPA pre-training gives \nMpcFtId{}, against \nMpcSupThreeId{} for supervised training from scratch (\nMpcRatioId$\times$). At $\lambda=3$ the gap widens to \nMpcFtLamThree{} against \nMpcSupThreeLamThree{} (\nMpcRatioLamThree$\times$). A PI controller on the tracked speed is far worse (\nMpcPiId{}) and fails when the tracker fails (\nMpcPiLamThree{}; Fig.~\ref{fig:trace}).
+
+\begin{figure}[!t]\centering
+\includegraphics[width=\columnwidth]{fig_mpc.pdf}
+\caption{Closed-loop excess tracking MSE over the oracle (40 test episodes, paired bootstrap 95\% CIs) at the training nuisance (left) and heavy nuisance (right).}
+\label{fig:mpc}
+\end{figure}
+
+\begin{figure}[!t]\centering
+\includegraphics[width=\columnwidth]{fig_mpc_trace.pdf}
+\caption{One closed-loop episode at $\lambda=3$. The PI controller acts on a tracker that has locked onto a distractor.}
+\label{fig:trace}
+\end{figure}
+
+\section{Failure modes met during development}\label{sec:failures}
+\emph{Action shortcut.} A single-stage action-conditioned JEPA whose EMA target encoder also received the commands collapsed to an effective latent rank of 2.6 of 48 within a few hundred steps (Fig.~\ref{fig:collapse}). Its speed probe stayed at the level of an untrained encoder. The latent encoded only the command history, which an action-conditioned predictor forecasts perfectly. VICReg-strength variance and covariance terms~\cite{bardes2022vicreg} did not prevent this; observation-only targets did. We expect the same shortcut in any self-predictive world model whose target encoder sees the actions~\cite{schwarzer2021spr}.
+\emph{Read-out bottleneck.} An untrained soft-argmax read-out discarded the speed information: an MLP probe on the full trunk map reached \SI{5.1}{\radian\per\second}, against \SI{18.1}{\radian\per\second} on the read-out. The read-out is therefore trained in stage 2.
+\emph{Rollout drift.} Without the consistency term, probe-decoded rollouts diverged beyond the training horizon.
+\emph{Infeasible control task.} The first closed-loop task used set-point steps of up to 80\% of the reachable band. Every controller, the oracle included, was saturation-limited, so the task measured the actuator rather than the model. It was replaced by moderate steps; the old results are archived.
+
+\begin{figure*}[!t]\centering
+\includegraphics[width=0.92\textwidth]{fig_collapse.pdf}
+\caption{Action-shortcut collapse. A single-stage JEPA whose EMA target sees the commands collapses (left) and never learns speed (right); the two-stage design with frozen observation targets does not.}
+\label{fig:collapse}
+\end{figure*}
+
+\section{Second-round improvements}\label{sec:round2}
+The first-round results suggested four targeted changes. Fig.~\ref{fig:ablation} collects them with the original ablations.
+
+\emph{Training horizon.} Increasing $K$ from 0.64 to \SI{1.28}{\second} reduced the \SI{2}{\second} error from \nAblShort{} to \nJepaH{}, the largest single gain in the study, and it helped every objective. Full-horizon rollouts ($K=\SI{2}{\second}$ on \SI{4}{\second} crops) give \nAblXlong{}. \pending{interpret once jepa\_xlong\_s0 is evaluated.}
+
+\emph{Nuisance-randomised pre-training.} Drawing $\lambda\sim U[0,3]$ per training episode, a form of domain randomisation~\cite{tobin2017domain}, gives \nAblMix{} in distribution and \nAblMixLamThree{} at $\lambda=3$, against \nAblJepaSzLamThree{} for fixed-$\lambda$ training. \pending{interpret.}
+
+\emph{JEPA perception with physics dynamics.} The causal JEPA belief, read by the MLP probe, replaces the comb tracker as the input to grey-box identification of the true equation, fitted over the same window as a tracker control. In distribution the hybrid forecasts with \nHybJepaId{}, against \nHybTrackerId{} for the tracker over the same window and \nJepaH{} for the pure JEPA world model; at $\lambda=3$ the figures are \nHybJepaLamThree, \nHybTrackerLamThree{} and \nJepaLamThree{}. \pending{interpret.}
+
+\emph{Seed ensembles.} A \nSeeds-member ensemble of JEPA world models forecasts with \nEnsJepaId{}, against \nEnsSingleJepaId{} for a single member. Its member spread covers \nEnsCovJepaId\% of errors within $\pm2\sigma$, and spread and error correlate at \nEnsCorrJepaId{}~\cite{lakshminarayanan2017ensembles}. \pending{interpret.}
+
+\emph{Adaptive context and pre-training.} An explicit context embedding of recent transitions~\cite{lee2020cadm} made forecasts worse (\nAblCtx{}), and removing stage-1 pre-training cost \nAblRand{} against \nAblShort{} (both at the short horizon).
+
+\begin{figure}[!t]\centering
+\includegraphics[width=\columnwidth]{fig_ablation.pdf}
+\caption{Seed-0 ablations and second-round variants: \SI{2}{\second} forecast RMSE in distribution, in the held-out regime and at $\lambda=3$.}
+\label{fig:ablation}
+\end{figure}
+
+\section{Discussion and implications}
+\pending{final discussion after multi-seed numbers.}
+
+\section{Limitations and claim boundary}
+Everything here is synthetic. The truth model is a scalar rotor with a first-order actuator; the sensor is a declared spectral model, not a measured microphone; and the distractors are stylised. The classical pipeline is given the exact model structure, which a real engine does not offer. The learned models are given 3000 unlabelled episodes of system-identification excitation, which a test cell might, or might not, provide. Several second-round results rest on a single seed. The results establish what this JEPA formulation can and cannot recover under controlled, fully known conditions; they validate no engine, sensor or controller.
+
+\section{Conclusion}
+\pending{conclusion after final numbers.}
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+\end{document}

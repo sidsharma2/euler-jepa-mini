@@ -1,0 +1,8 @@
+y,label,color,excess,lo,hi,track,steady,err_minus,err_plus
+0,Supervised (3000 labels),sup,20.769,11.737,31.838,15.38,7.6181,9.0325,11.068
+1,Tracker + grey-box (true ODE),grey,14.544,4.5761,27.719,15.176,7.5389,9.9676,13.175
+2,JEPA + fine-tune (300 labels),ft,28.554,19.159,39.147,15.631,8.4069,9.3949,10.592
+3,JEPA WM (300-label probe),jepa,38.561,18.543,69.892,15.947,9.4524,20.018,31.33
+4,Reconstruction WM (300-label probe),recon,85.824,29.213,185.87,17.366,12.402,56.611,100.05
+5,Supervised (300 labels),sup300,224.06,119.49,356.97,20.972,17.833,104.57,132.91
+6,PI on tracked speed,pi,2443.6,583.92,5606.9,51.569,54.248,1859.7,3163.3

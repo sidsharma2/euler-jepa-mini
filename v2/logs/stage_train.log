@@ -1,0 +1,31 @@
+[00:35:30] {"git_head": "5b3c2a172e0a75f13fd19c5118364dc9770b354e", "python": "3.12.13", "torch": "2.10.0+cu126", "device": "cuda", "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU", "timestamp": "2026-10-12T00:35:30", "agent": "Claude Code (claude-opus-5-5)"}
+[00:43:50] done jepa1_s0 in 500s
+[01:03:58] done jepa_s0 in 1208s
+[01:21:26] done recon_s0 in 1047s
+[01:21:47] {"git_head": "5b3c2a172e0a75f13fd19c5118364dc9770b354e", "python": "3.12.13", "torch": "2.10.0+cu126", "device": "cuda", "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU", "timestamp": "2026-10-12T01:21:47", "agent": "Claude Code (claude-opus-5-5)"}
+[01:39:25] done sup_all_s0 in 1059s
+[02:06:56] done jepa_rand_s0 in 1650s
+[02:22:33] {"git_head": "5b3c2a172e0a75f13fd19c5118364dc9770b354e", "python": "3.12.13", "torch": "2.10.0+cu126", "device": "cuda", "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU", "timestamp": "2026-10-12T02:22:33", "agent": "Claude Code (claude-opus-5-5)"}
+[02:51:44] done jepa_long_s0 in 1751s
+[03:05:37] done jepa_ctx_s0 in 832s
+[03:39:28] done recon_long_s0 in 2031s
+[04:10:50] done sup_all_long_s0 in 1883s
+[04:11:28] {"git_head": "5b3c2a172e0a75f13fd19c5118364dc9770b354e", "python": "3.12.13", "torch": "2.10.0+cu126", "device": "cuda", "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU", "timestamp": "2026-10-12T04:11:28", "agent": "Claude Code (claude-opus-5-5)"}
+[04:18:57] done sup_n10_long_s0 in 449s
+[04:26:12] done jepaft_n10_long_s0 in 435s
+[04:35:32] done sup_n30_long_s0 in 560s
+[04:43:11] done jepaft_n30_long_s0 in 459s
+[04:51:07] done sup_n100_long_s0 in 476s
+[04:58:54] done jepaft_n100_long_s0 in 466s
+[05:06:45] done sup_n300_long_s0 in 472s
+[05:14:32] done jepaft_n300_long_s0 in 466s
+[05:22:22] done jepa1_hi_s0 in 471s
+[05:56:08] done jepa_hi_long_s0 in 2025s
+[06:27:33] done recon_hi_long_s0 in 1885s
+[06:33:02] done jepa1_s1 in 329s
+[07:05:42] done jepa_long_s1 in 1959s
+[07:36:52] done recon_long_s1 in 1870s
+[08:24:15] done sup_all_long_s1 in 2843s
+[08:24:57] {"git_head": "5b3c2a172e0a75f13fd19c5118364dc9770b354e", "python": "3.12.13", "torch": "2.10.0+cu126", "device": "cuda", "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU", "timestamp": "2026-10-12T08:24:57", "agent": "Claude Code (claude-opus-5-5)"}
+[08:34:19] done jepa1_s2 in 562s
+[15:34:07] done jepa_long_s2 in 25187s

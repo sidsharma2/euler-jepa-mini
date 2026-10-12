@@ -1,0 +1,2 @@
+val_mix        n=  300 lam=-1 regime=id omega=[160,636] 6s
+train_mix      n= 3000 lam=-1 regime=id omega=[150,694] 44s

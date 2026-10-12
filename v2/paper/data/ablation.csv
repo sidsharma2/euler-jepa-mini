@@ -1,0 +1,5 @@
+y,label,id,ood,lam3
+0,Main: two-stage JEPA (long horizon),10.1358,14.4103,12.9122
+1,Short horizon (0.64 s on 2 s crops),14.6705,15.6558,16.619
+2,No stage-1 pre-training,15.6534,16.1446,20.1028
+3,Adaptive context embedding,16.056,19.0846,18.8739

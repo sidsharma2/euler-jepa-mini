@@ -1,0 +1,2 @@
+[08:24:15] training {'name': 'jepa1_s2', 'method': 'jepa1', 'seed': 2, 'train': 'train', 'val': 'val', 'steps': 3000} on cuda
+[08:24:33] {"step": 1, "loss": 0.81307, "frame_probe_rmse": 22.47483, "eff_rank": 281.22247, "elapsed_s": 17.89928}

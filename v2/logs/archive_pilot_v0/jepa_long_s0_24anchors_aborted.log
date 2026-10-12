@@ -1,0 +1,4 @@
+[02:06:56] training {'name': 'jepa_long_s0', 'method': 'jepa', 'seed': 0, 'train': 'train', 'val': 'val', 'init_from': 'jepa1_s0/encoder.pt', 'rollout_k': 128, 'crop': 320, 'steps': 8000} on cuda
+[02:06:56] stage-2 JEPA: frozen spectrogram trunk from D:\Research\research-workflow\examples\euler-jepa-mini\v2\runs\jepa1_s0\encoder.pt
+[02:07:05] {"step": 1, "now": 0.81617, "roll": 0.80938, "tf": 0.81585, "consist": 1.58867, "loss": 4.03008, "eff_rank": 4.98802, "lr": 0.0, "elapsed_s": 7.15099, "val_filter_rmse": 35.00436, "val_roll_rmse": 7168.09326}
+[02:18:45] {"step": 250, "now": 0.33349, "roll": 0.345, "tf": 0.33401, "consist": 0.03061, "loss": 1.0431, "eff_rank": 2.5931, "lr": 0.00063, "elapsed_s": 708.99756, "val_filter_rmse": 32.83574, "val_roll_rmse": 543.58545}

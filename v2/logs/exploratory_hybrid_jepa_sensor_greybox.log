@@ -1,0 +1,5 @@
+
+jepa_s0 test_id: sensor filt jepa=3.64 tracker=4.38 | 2s forecast: hybrid=10.55 greybox=4.01 jepaWM=13.34 | 1s: 
+hybrid=9.91 greybox=3.32 (575s)
+jepa_s0 test_lam3: sensor filt jepa=15.11 tracker=12.07 | 2s forecast: hybrid=22.14 greybox=14.77 jepaWM=15.58 | 1s: 
+hybrid=16.22 greybox=16.92 (675s)

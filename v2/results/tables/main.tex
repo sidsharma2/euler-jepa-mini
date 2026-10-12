@@ -1,0 +1,17 @@
+\begin{tabular}{lrrrrrrr}
+\toprule
+Method & Filter & 0.25 s & 1 s & 2 s & 2 s OOD & Torque res. & Gain err.\\
+\midrule
+Oracle (true parameters, true state) & -- & 0.00 & 0.00 & 0.00 & 0.00 & 0.07 & --\\
+Tracker + grey-box ID (true ODE form) & 4.44 & 2.54 & 3.74 & 4.61 & 7.58 & 0.34 & 0.031\\
+Nominal physics + tracker & -- & 43.55 & 43.89 & 43.10 & 54.59 & 5.02 & --\\
+Persistence & -- & 19.92 & 54.46 & 71.70 & 58.58 & 3.65 & --\\
+JEPA world model, linear probe (300) & 6.66 & 6.64 & 8.96 & 10.14 & 14.41 & 1.00 & 0.090\\
+JEPA world model, MLP probe (300) & 3.67 & 4.19 & 7.64 & 8.98 & 13.36 & 0.68 & --\\
+Reconstruction WM, linear probe (300) & 9.76 & 15.12 & 16.26 & 17.31 & 16.18 & 1.87 & 0.195\\
+Reconstruction WM, MLP probe (300) & 5.20 & 6.50 & 10.06 & 11.63 & 13.81 & 0.92 & --\\
+Supervised, 300 labels & 6.20 & 7.83 & 12.33 & 14.69 & 17.85 & 1.12 & 0.066\\
+JEPA + fine-tune, 300 labels & 4.03 & 4.56 & 7.80 & 9.49 & 14.90 & 0.72 & 0.061\\
+Supervised, all 3000 labels & 2.33 & 3.07 & 5.52 & 7.27 & 11.73 & 0.52 & 0.041\\
+\bottomrule
+\end{tabular}

@@ -1,0 +1,5 @@
+﻿{"step": 1, "roll": 0.77627, "tf": 0.08415, "var": 0.41372, "cov": 0.00549, "loss": 1.27436, "eff_rank": 3.67726, "lr": 0.00013, "elapsed_s": 2.39615, "val_filter_rmse": 37.9626, "val_roll_rmse": 2222.57153}
+{"step": 100, "roll": 0.10411, "tf": 0.01678, "var": 0.08238, "cov": 1.34407, "loss": 0.25703, "eff_rank": 2.57981, "lr": 0.00075, "elapsed_s": 17.534, "val_filter_rmse": 37.5208, "val_roll_rmse": 363.22333}
+{"step": 200, "roll": 0.06703, "tf": 0.01121, "var": 0.04386, "cov": 2.02258, "loss": 0.20301, "eff_rank": 2.58824, "lr": 0.00025, "elapsed_s": 34.19816, "val_filter_rmse": 36.37127, "val_roll_rmse": 593.33954}
+{"step": 300, "roll": 0.04981, "tf": 0.00548, "var": 0.05347, "cov": 1.81443, "loss": 0.18134, "eff_rank": 2.61202, "lr": 0.0, "elapsed_s": 55.22584, "val_filter_rmse": 36.53271, "val_roll_rmse": 536.09015}
+sec/step 0.22975536902745564
