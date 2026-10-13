@@ -8,7 +8,7 @@
   ytick={0,...,\nrows}, yticklabels from table={\abl}{label}, yticklabel style={font=\scriptsize},
   xlabel={2\,s forecast RMSE (rad\,s$^{-1}$), seed 0, 300-label linear probe}, xmin=0, xmax=22,
   minor y tick num=0, ytick style={draw=none}, legend style={at={(0.5,-0.2)}, anchor=north}, legend columns=3,
-  legend cell align=left]
+  legend cell align=left, area legend]
   \addplot[fill=cJepa, draw=none, bar shift=-5.5pt] table[y=y, x=id] {\abl}; \addlegendentry{In distribution}
   \addplot[fill=cFt, draw=none, bar shift=0pt] table[y=y, x=ood] {\abl}; \addlegendentry{Held-out regime}
   \addplot[fill=cHi, draw=none, bar shift=5.5pt] table[y=y, x=lam3] {\abl}; \addlegendentry{Nuisance $\lambda=3$}

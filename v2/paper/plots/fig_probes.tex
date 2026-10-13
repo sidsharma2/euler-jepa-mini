@@ -2,11 +2,11 @@
 \input{common.tex}
 \begin{document}
 \begin{tikzpicture}
-\begin{axis}[width=12cm, height=5.2cm, ybar, bar width=6pt, ymin=-0.25, ymax=1,
+\begin{axis}[width=8.6cm, height=5.4cm, ybar, bar width=4.2pt, ymin=-0.25, ymax=1,
   ylabel={Linear-probe $R^2$ at $t=2$\,s}, symbolic x coords={mdot,J,kw,c2,tau,d}, xtick=data,
-  xticklabels={{$\dot m$ (mass flow)}, {$J$ (inertia)}, {$k_\omega$ (gain)}, {$c_2$ (quad.\ load)}, {$\tau_a$ (actuator lag)}, {$d$ (delay)}},
-  enlarge x limits=0.1, legend style={at={(0.5,1.02)}, anchor=south}, legend columns=4,
-  extra y ticks={0}, extra y tick style={grid=major, grid style={black!50}}, minor tick num=0]
+  xticklabels={$\dot m$, $J$, $k_\omega$, $c_2$, $\tau_a$, $d$}, x tick label style={font=\footnotesize},
+  enlarge x limits=0.12, legend style={at={(0.5,1.03)}, anchor=south}, legend columns=2,
+  extra y ticks={0}, extra y tick style={grid=major, grid style={black!50}}, minor tick num=0, area legend]
   \addplot[fill=cJepa, draw=none, error bars/.cd, y dir=both, y explicit] table[x=param, y=jepa_m, y error=jepa_sd] {\datadir/param_probes.csv};
   \addplot[fill=cRecon, draw=none, error bars/.cd, y dir=both, y explicit] table[x=param, y=recon_m, y error=recon_sd] {\datadir/param_probes.csv};
   \addplot[fill=cSup, draw=none, error bars/.cd, y dir=both, y explicit] table[x=param, y=sup_m, y error=sup_sd] {\datadir/param_probes.csv};

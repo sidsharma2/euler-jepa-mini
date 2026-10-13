@@ -1,0 +1,21 @@
+\documentclass[border=4pt]{standalone}
+\input{common.tex}
+\begin{document}
+\begin{tikzpicture}
+\begin{groupplot}[group style={group size=1 by 2, vertical sep=0.35cm, xticklabels at=edge bottom},
+  width=15cm, xmin=0, xmax=3.99]
+\nextgroupplot[height=5.6cm, ylabel={Frequency (kHz)}, ymin=0, ymax=3.2, axis on top, enlargelimits=false,
+  title={Model input: synthetic casing-microphone log spectrum (speed is never observed)}]
+  \addplot graphics[xmin=0, xmax=3.99, ymin=0, ymax=3.2] {\datadir/spectrogram.png};
+  \foreach \h in {1,2,3}{\addplot[white, densely dashed, line width=0.6pt] table[x=t, y=h\h] {\datadir/problem_episode.csv};}
+  \node[white, font=\scriptsize, anchor=north west] at (axis cs:0.05,3.15) {dashed: blade-passing harmonics $hN_b\omega/2\pi$ (hidden)};
+\nextgroupplot[height=3.8cm, xlabel={Time (s)}, ylabel={$\omega$ (rad\,s$^{-1}$)}, axis y line*=left]
+  \addplot[black, line width=1.0pt] table[x=t, y=omega] {\datadir/problem_episode.csv};
+  \draw[black!40, densely dotted] (axis cs:1.99,\pgfkeysvalueof{/pgfplots/ymin}) -- (axis cs:1.99,\pgfkeysvalueof{/pgfplots/ymax});
+\end{groupplot}
+\begin{axis}[at={(group c1r2.south west)}, width=15cm, height=3.8cm, xmin=0, xmax=3.99, axis y line*=right,
+  axis x line=none, ylabel={Command $u$}, ymin=0.2, ymax=1.0, ylabel style={text=cRecon}, yticklabel style={text=cRecon}]
+  \addplot[cRecon, line width=1.1pt, const plot] table[x=t, y=u] {\datadir/problem_episode.csv};
+\end{axis}
+\end{tikzpicture}
+\end{document}

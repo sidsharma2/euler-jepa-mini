@@ -6,7 +6,7 @@
 > supervised learning and a classical pipeline given the true ODE. v2 is a full redesign,
 > motivated by the v1 audit below. Its numbers are not comparable with v1.
 >
-> * Paper (IEEE style, LaTeX + TikZ): [`v2/paper/main.tex`](v2/paper/main.tex) / [`main.pdf`](v2/paper/main.pdf)
+> * Paper, "Listening for Physics: A JEPA World Model of a Rotor It Cannot See" (IEEE style, LaTeX + pgfplots/TikZ): [`v2/paper/main.tex`](v2/paper/main.tex) / [`main.pdf`](v2/paper/main.pdf). It frames the rotor as a toy test of JEPA for learned turbulence closures.
 > * Figures as SVG: [`v2/paper/svg/`](v2/paper/svg/)
 > * Results and the plain-language summary: [`v2/README.md`](v2/README.md)
 > * Reproduce: `python v2/make_data.py && python v2/run_v2.py train && python v2/run_v2.py eval`
