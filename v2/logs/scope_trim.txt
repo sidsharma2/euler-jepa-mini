@@ -1,0 +1,2 @@
+trimmed 9:55:57 AM
+Dropped at user request (GPU shared with daily wiki automation): recon_mix_long_s0, sup_n{10,100}_long_s{1,2}, jepaft_n{10,100}_long_s{1,2}. Label sweep is seed-0 only.

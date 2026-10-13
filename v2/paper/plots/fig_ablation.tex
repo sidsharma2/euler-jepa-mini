@@ -7,7 +7,7 @@
 \begin{axis}[width=9.5cm, height=6.0cm, xbar, bar width=5pt, y dir=reverse, ymin=-0.6, ymax=\nrows+0.6,
   ytick={0,...,\nrows}, yticklabels from table={\abl}{label}, yticklabel style={font=\scriptsize},
   xlabel={2\,s forecast RMSE (rad\,s$^{-1}$), seed 0, 300-label linear probe}, xmin=0, xmax=22,
-  minor y tick num=0, ytick style={draw=none}, legend style={at={(0.98,0.98)}, anchor=north east},
+  minor y tick num=0, ytick style={draw=none}, legend style={at={(0.5,-0.2)}, anchor=north}, legend columns=3,
   legend cell align=left]
   \addplot[fill=cJepa, draw=none, bar shift=-5.5pt] table[y=y, x=id] {\abl}; \addlegendentry{In distribution}
   \addplot[fill=cFt, draw=none, bar shift=0pt] table[y=y, x=ood] {\abl}; \addlegendentry{Held-out regime}

@@ -315,6 +315,16 @@ def export_numbers(L, C, H):
                nAblMixLamThree=m(r"jepa_mix_long_s0\+probe300", "test_lam3"), nAblMixLamZero=m(r"jepa_mix_long_s0\+probe300", "test_lam0"),
                nAblHiLamThree=m(r"jepa_hi_long_s0\+probe300", "test_lam3"), nAblJepaSzLamThree=m(r"jepa_long_s0\+probe300", "test_lam3"),
                nAblReconMixLamThree=m(r"recon_mix_long_s0\+probe300", "test_lam3"))
+    # Seed-0 counterparts for like-for-like comparison with single-seed ablations and round-2 runs.
+    s0, mix, hi = r"jepa_long_s0\+probe300", r"jepa_mix_long_s0\+mlp300", r"jepa_hi_long_s0\+mlp300"
+    out.update(nJepaSzH=m(s0), nJepaSzLamZero=m(s0, "test_lam0"), nJepaSzOOD=m(s0, "test_ood"),
+               nJepaSzMlpFiltLamThree=m(r"jepa_long_s0\+mlp300", "test_lam3", "filter_rmse"),
+               nMixMlpFiltLamThree=m(mix, "test_lam3", "filter_rmse"), nHiMlpFiltLamThree=m(hi, "test_lam3", "filter_rmse"),
+               nMixMlpH=m(mix), nJepaSzMlpH=m(r"jepa_long_s0\+mlp300"), nMixMlpLamThree=m(mix, "test_lam3"),
+               nJepaSzMlpLamThree=m(r"jepa_long_s0\+mlp300", "test_lam3"),
+               nXlongOOD=m(r"jepa_xlong_s0\+probe300", "test_ood"), nXlongLamThree=m(r"jepa_xlong_s0\+probe300", "test_lam3"),
+               nJepaSzH_sd_note=0)
+    out.pop("nJepaSzH_sd_note")
     out["nLabelRatioTen"] = out["nSupTen"] / out["nJepaProbeTen"]
     out["nSeeds"] = len(L[(L.test == "test_id") & L.run.str.fullmatch(J)])
     probes = pd.read_csv(DATA / "param_probes.csv").set_index("param")

@@ -3,6 +3,7 @@ y,label,color,excess,lo,hi,track,steady,err_minus,err_plus
 1,Tracker + grey-box (true ODE),grey,6.5937,2.8826,11.154,15.216,7.2586,3.7111,4.5602
 2,JEPA + fine-tune (300 labels),ft,7.6765,3.6645,12.283,15.252,7.5091,4.0119,4.6063
 3,JEPA WM (300-label probe),jepa,7.9096,3.5449,12.921,15.26,7.4538,4.3647,5.0118
-4,Reconstruction WM (300-label probe),recon,22.674,9.1734,44.809,15.736,8.8813,13.5,22.135
-5,Supervised (300 labels),sup300,22.233,16.377,28.627,15.722,8.2457,5.8568,6.3939
-6,PI on tracked speed,pi,344.35,257.81,442.26,23.86,12.245,86.532,97.916
+4,JEPA trained at $\lambda{=}2.5$,jepahi,13.473,9.1201,17.97,15.441,7.4262,4.353,4.4967
+5,Reconstruction WM (300-label probe),recon,22.674,9.1734,44.809,15.736,8.8813,13.5,22.135
+6,Supervised (300 labels),sup300,22.233,16.377,28.627,15.722,8.2457,5.8568,6.3939
+7,PI on tracked speed,pi,344.35,257.81,442.26,23.86,12.245,86.532,97.916

@@ -1,0 +1,22 @@
+{
+  "git_head": "767487457b40331b40c4576be02d57a398186e88",
+  "python": "3.12.13",
+  "torch": "2.10.0+cu126",
+  "device": "cuda",
+  "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+  "timestamp": "2026-10-12T19:18:31",
+  "agent": "Claude Code (claude-opus-5-5)",
+  "spec": {
+    "name": "sup_all_long_s2",
+    "method": "sup",
+    "seed": 2,
+    "train": "train",
+    "val": "val",
+    "labelled": 3000,
+    "rollout_k": 128,
+    "crop": 320,
+    "steps": 8000,
+    "anchors": 8
+  },
+  "wall_s": 5343.718530416489
+}

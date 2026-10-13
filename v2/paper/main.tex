@@ -105,7 +105,7 @@ All learned controls share the trunk architecture, readout, belief encoder, pred
 We also report nominal physics with catalogue parameters, persistence, an oracle with the true parameters and state, a PI controller on the tracked speed with gains tuned on validation, and a random-encoder probe.
 
 \section{Results}\label{sec:results}
-Unless stated otherwise, errors are rotor-speed RMSE in \si{\radian\per\second} over 300 test episodes, with the mean $\pm$ s.d.\ over \nSeeds{} seeds for the main configuration and seed-0 runs for ablations.
+Unless stated otherwise, errors are rotor-speed RMSE in \si{\radian\per\second} over 300 test episodes. The JEPA, reconstruction and fully supervised world models in the main configuration report the mean $\pm$ s.d.\ over \nSeeds{} seeds. The supervised label sweep, JEPA + fine-tune, the closed-loop study, the hybrid and all ablations use seed 0, and the text compares seed-0 numbers with seed-0 numbers.
 
 \subsection{Forecasting and state estimation}
 Table~\ref{tab:main} and Fig.~\ref{fig:horizon} summarise accuracy. The oracle reproduces the stored trajectories exactly, which verifies the protocol. Nominal physics (\nNominalH{} at \SI{2}{\second}) shows how much the hidden parameters matter. With a 300-label linear probe, the JEPA world model forecasts \SI{2}{\second} ahead with \nJepaH{}, against \nReconH{} for the reconstruction world model trained identically; with MLP probes the figures are \nJepaMlpH{} and \nReconMlpH{}. JEPA + fine-tune reaches \nFtThreeH{} with 300 labels, against \nSupThreeH{} for supervised training from scratch on the same labels. Full supervision with 3000 labels reaches \nSupAllH{}. The classical pipeline, given the exact equation, remains the most accurate in distribution at \nGreyH{}. For state estimation, the MLP-probed JEPA belief (\nJepaMlpFilt{}) is on par with the hand-built tracker (\nTrackerFilt{}).
@@ -123,7 +123,7 @@ Table~\ref{tab:main} and Fig.~\ref{fig:horizon} summarise accuracy. The oracle r
 \end{figure*}
 
 \subsection{Label efficiency}
-Fig.~\ref{fig:labels} shows the result that matters most for a test cell, where unlabelled acoustic logs are cheap and tachometer-instrumented runs are not. With ten labelled episodes, a linear probe on the frozen JEPA latent forecasts with \nJepaProbeTen{}, against \nSupTen{} for the same network trained from scratch on those ten episodes (\nLabelRatioTen$\times$). JEPA pre-training followed by fine-tuning beats supervised training at every budget up to 300 episodes. Supervision overtakes the frozen probe only when labels are plentiful.
+Fig.~\ref{fig:labels} shows the result that matters most for a test cell, where unlabelled acoustic logs are cheap and tachometer-instrumented runs are not. With ten labelled episodes, a linear probe on the frozen JEPA latent forecasts with \nJepaProbeTen{} (mean over three pre-training seeds), against \nSupTen{} for the same network trained from scratch on those ten episodes (seed 0; \nLabelRatioTen$\times$). JEPA pre-training followed by fine-tuning beats supervised training at every budget up to 300 episodes. Supervision overtakes the frozen probe only when labels are plentiful.
 
 \begin{figure*}[!t]\centering
 \includegraphics[width=0.92\textwidth]{fig_labels.pdf}
@@ -136,7 +136,7 @@ The comb tracker locks onto distractor tones once they are frequent (Fig.~\ref{f
 
 \begin{figure*}[!t]\centering
 \includegraphics[width=0.92\textwidth]{fig_nuisance.pdf}
-\caption{Filtering and forecast error against test nuisance $\lambda$ (dotted line: training level). Learned models are trained at $\lambda=1$ unless marked.}
+\caption{Filtering and forecast error against test nuisance $\lambda$ (dotted line: training level), with 300-label linear probes for the self-supervised models. Learned models are trained at $\lambda=1$ unless marked; the hybrid is seed 0.}
 \label{fig:nuisance}
 \end{figure*}
 
@@ -183,15 +183,15 @@ CEM-MPC controllers that differ only in their model track moderate set-point ste
 \end{figure*}
 
 \section{Second-round improvements}\label{sec:round2}
-The first-round results suggested four targeted changes. Fig.~\ref{fig:ablation} collects them with the original ablations.
+The first-round results suggested four targeted changes, each aimed at one finding. Fig.~\ref{fig:ablation} collects them with the original ablations; all numbers in this section are seed 0.
 
-\emph{Training horizon.} Increasing $K$ from 0.64 to \SI{1.28}{\second} reduced the \SI{2}{\second} error from \nAblShort{} to \nJepaH{}, the largest single gain in the study, and it helped every objective. Full-horizon rollouts ($K=\SI{2}{\second}$ on \SI{4}{\second} crops) give \nAblXlong{}. \pending{interpret once jepa\_xlong\_s0 is evaluated.}
+\emph{Training horizon.} Increasing the rollout length from 0.64 to \SI{1.28}{\second} reduced the \SI{2}{\second} error from \nAblShort{} to \nJepaSzH{}, the largest single gain in the study, and it helped every objective. Training on the full \SI{2}{\second} horizon (\SI{4}{\second} crops) did \emph{not} help further: \nAblXlong{} in distribution, \nXlongOOD{} in the held-out regime and \nXlongLamThree{} at $\lambda=3$. The benefit of longer rollouts saturates, and fewer anchors per crop at that length is a plausible cost.
 
-\emph{Nuisance-randomised pre-training.} Drawing $\lambda\sim U[0,3]$ per training episode, a form of domain randomisation~\cite{tobin2017domain}, gives \nAblMix{} in distribution and \nAblMixLamThree{} at $\lambda=3$, against \nAblJepaSzLamThree{} for fixed-$\lambda$ training. \pending{interpret.}
+\emph{Nuisance-randomised pre-training.} Drawing $\lambda\sim U[0,3]$ per training episode, a form of domain randomisation~\cite{tobin2017domain}, splits cleanly by task. Perception became much more robust: with the MLP probe, filtering error at $\lambda=3$ fell from \nJepaSzMlpFiltLamThree{} to \nMixMlpFiltLamThree{}, and to \nHiMlpFiltLamThree{} when trained at a fixed $\lambda=2.5$. Forecasts barely moved (\nJepaSzMlpLamThree{} against \nMixMlpLamThree{} at $\lambda=3$; \nAblMix{} in distribution with the linear probe). Seeing the speed better does not fix the long-horizon error, which again points at dynamics and identification rather than perception. In closed loop at $\lambda=3$, planning with the $\lambda=2.5$-trained JEPA reduced the excess error from \nMpcJepaLamThree{} to \nMpcJepaHiLamThree{}.
 
-\emph{JEPA perception with physics dynamics.} The causal JEPA belief, read by the MLP probe, replaces the comb tracker as the input to grey-box identification of the true equation, fitted over the same window as a tracker control. In distribution the hybrid forecasts with \nHybJepaId{}, against \nHybTrackerId{} for the tracker over the same window and \nJepaH{} for the pure JEPA world model; at $\lambda=3$ the figures are \nHybJepaLamThree, \nHybTrackerLamThree{} and \nJepaLamThree{}. \pending{interpret.}
+\emph{JEPA perception with physics dynamics.} The causal JEPA belief, read by the MLP probe, replaced the comb tracker as the input to grey-box identification of the true equation, fitted from $t=\SI{0.3}{\second}$ (Fig.~\ref{fig:hybrid}). In distribution the hybrid forecasts with \nHybJepaId{}, against \nJepaSzH{} for the JEPA world model alone, a 30\% reduction. A tracker fitted over the same window does better (\nHybTrackerId{}), because its Viterbi track is smoothed offline while the JEPA belief is causal. At $\lambda=3$ the ordering reverses: the hybrid (\nHybJepaLamThree{}) beats the tracker over the same window (\nHybTrackerLamThree{}) but loses to the pure JEPA world model (\nAblJepaSzLamThree{}). Output-error identification amplifies sensor error, so physics dynamics pay off only when perception is good.
 
-\emph{Seed ensembles.} A \nSeeds-member ensemble of JEPA world models forecasts with \nEnsJepaId{}, against \nEnsSingleJepaId{} for a single member. Its member spread covers \nEnsCovJepaId\% of errors within $\pm2\sigma$, and spread and error correlate at \nEnsCorrJepaId{}~\cite{lakshminarayanan2017ensembles}. \pending{interpret.}
+\emph{Seed ensembles.} A three-member ensemble of JEPA world models forecasts with \nEnsJepaId{}, against \nEnsSingleJepaId{} for a single member on average, and with \nEnsJepaLamThree{} against \nEnsSingleJepaLamThree{} at $\lambda=3$~\cite{lakshminarayanan2017ensembles}. The ensemble is over-confident, however. Only \nEnsCovJepaId\% of errors fall within $\pm2\sigma$ of the ensemble mean (\nEnsCovJepaOOD\% in the held-out regime), and spread and error correlate at only \nEnsCorrJepaId{} (Fig.~\ref{fig:spread}). The spread ranks difficulty weakly; it is not a calibrated uncertainty.
 
 \emph{Adaptive context and pre-training.} An explicit context embedding of recent transitions~\cite{lee2020cadm} made forecasts worse (\nAblCtx{}), and removing stage-1 pre-training cost \nAblRand{} against \nAblShort{} (both at the short horizon).
 
@@ -201,14 +201,32 @@ The first-round results suggested four targeted changes. Fig.~\ref{fig:ablation}
 \label{fig:ablation}
 \end{figure}
 
+\begin{figure*}[!t]\centering
+\includegraphics[width=0.78\textwidth]{fig_hybrid.pdf}
+\caption{JEPA perception with physics dynamics (seed 0). Grey-box identification of the true equation driven by the comb tracker or by the causal JEPA belief, against the JEPA world model alone.}
+\label{fig:hybrid}
+\end{figure*}
+
+\begin{figure*}[!t]\centering
+\includegraphics[width=0.92\textwidth]{fig_spread_skill.pdf}
+\caption{Spread--skill of three-seed ensembles. Points below the dashed line would mean the spread over-states the error; all ensembles lie above it, so they are over-confident.}
+\label{fig:spread}
+\end{figure*}
+
 \section{Discussion and implications}
-\pending{final discussion after multi-seed numbers.}
+\emph{What JEPA buys here is labels and robustness, not peak accuracy.} When the equation of motion is known and the sensor is clean, a hand-built tracker plus grey-box identification is still the best forecaster in this study. The JEPA world model wins where that pipeline is brittle or expensive. It needs only a handful of labelled runs, it degrades gracefully as acoustic nuisance grows, and it supports planning directly in latent space. With 300 labels, JEPA pre-training reduced excess closed-loop error \nMpcRatioId$\times$ at the training nuisance and \nMpcRatioLamThree$\times$ under heavy nuisance. For a test cell that logs hours of unlabelled sensor data but instruments only a few runs, that is the relevant trade.
+
+\emph{Predicting representations beats predicting observations here.} With identical architecture, data and budget, the JEPA objective gave a far more linearly accessible speed estimate than reconstruction (\nJepaH{} against \nReconH{} at \SI{2}{\second} with linear probes), better control authority, and better robustness. Under MLP probes the gap shrinks to \nJepaMlpH{} against \nReconMlpH{}, so much of the advantage is in \emph{how} the information is organised, not only \emph{whether} it is present.
+
+\emph{The bottleneck is machine identification, not perception.} The belief recovers state about as well as a specialised tracker, and nuisance randomisation made perception markedly more robust. Yet long-horizon forecasts barely moved, and the latent recovers almost nothing of the inertia, mass flow or delay. Self-supervised world models will need a stronger incentive for in-context system identification before they can rival structure-aware physics on extrapolation. Physics-structured predictors and longer, more diverse excitation are natural next steps.
+
+\emph{Design lessons that transfer.} An action-conditioned self-predictive model whose target encoder sees the actions can collapse onto the action history. Observation-only, frozen targets avoid this. Rollout length matters more than most architectural choices, but only up to a point. Seed ensembles reduce error but must be recalibrated before their spread is trusted.
 
 \section{Limitations and claim boundary}
-Everything here is synthetic. The truth model is a scalar rotor with a first-order actuator; the sensor is a declared spectral model, not a measured microphone; and the distractors are stylised. The classical pipeline is given the exact model structure, which a real engine does not offer. The learned models are given 3000 unlabelled episodes of system-identification excitation, which a test cell might, or might not, provide. Several second-round results rest on a single seed. The results establish what this JEPA formulation can and cannot recover under controlled, fully known conditions; they validate no engine, sensor or controller.
+Everything here is synthetic. The truth model is a scalar rotor with a first-order actuator; the sensor is a declared spectral model, not a measured microphone; and the distractors are stylised. The classical pipeline is given the exact model structure, which a real engine does not offer. The learned models are given 3000 unlabelled episodes of system-identification excitation, which a test cell might, or might not, provide. The closed-loop study, the hybrid, the supervised label sweep and all second-round variants rest on a single seed, and the supervised and fine-tuned label-sweep runs for seeds 1--2 were dropped for compute reasons. The results establish what this JEPA formulation can and cannot recover under controlled, fully known conditions; they validate no engine, sensor or controller.
 
 \section{Conclusion}
-\pending{conclusion after final numbers.}
+Rebuilt around a partially observed, action-driven rotor, a two-stage action-conditioned JEPA learns a useful world model from unlabelled sound. With ten labelled episodes it forecasts \nLabelRatioTen$\times$ better than supervised training from scratch. It tolerates acoustic nuisance that breaks a hand-built tracker, recovers control authority, and plans close to an oracle. It does not match a classical pipeline that is given the true equation in distribution, and its latent identifies the machine only partially. Those two gaps, not representation learning itself, are where the next version should push.
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}

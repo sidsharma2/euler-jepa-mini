@@ -92,36 +92,39 @@ python tests/test_v2_physics.py
 
 ## Results
 
-> **Status (2026-10-12 05:45): provisional, seed 0 only.** Seeds 1–2 of the main configuration are
-> still training. Every number below is copied from `results/tables/tables.md`, which
-> `make_tables.py` regenerates from the result CSVs. Errors are rotor-speed RMSE in rad/s over
-> 300 held-out episodes, unless stated otherwise.
+> **Final (2026-10-13).** The JEPA, reconstruction and fully supervised world models report the
+> mean ± s.d. over 3 seeds. The supervised label sweep, JEPA + fine-tune, the closed-loop study,
+> the hybrid and all ablations use seed 0, and seed-0 numbers are compared with seed-0 numbers.
+> Every number comes from `results/` via `make_tables.py` (`results/tables/tables.md`) and
+> `paper/export_plot_data.py` (`paper/data/numbers.tex`). Errors are rotor-speed RMSE in rad/s over
+> 300 held-out episodes. The paper is [`paper/main.pdf`](paper/main.pdf), and every figure is in
+> [`paper/svg/`](paper/svg/).
 
-![Forecast error against horizon](figures/fig_horizon.png)
+![Forecast error against horizon](paper/svg/fig_horizon.svg)
 
 ### What JEPA buys you here
 
-1. **Label efficiency (the headline).** With the same number of speed labels, JEPA
-   pre-training beats supervised training from scratch at every budget:
+1. **Label efficiency (the headline).** A linear probe on the frozen JEPA latent, fitted on **10
+   labelled episodes**, forecasts 2 s ahead with **13.2 ± 1.4**. Supervised training from scratch
+   on the same 10 episodes gives **40.6**, which is 3.1× worse. JEPA pre-training followed by
+   fine-tuning beats supervised training at every budget up to 300 episodes.
 
    | Labelled episodes | 10 | 30 | 100 | 300 | 3000 |
    |---|---:|---:|---:|---:|---:|
-   | Supervised from scratch, 2 s forecast | 40.6 | 29.1 | 17.0 | 14.7 | 7.3 |
-   | Frozen JEPA + linear probe | **11.9** | **10.6** | 10.3 | 10.1 | 10.1 |
-   | JEPA + fine-tune | 18.9 | 14.0 | 11.5 | **9.5** | — |
+   | Supervised from scratch (seed 0) | 40.6 | 29.1 | 17.0 | 14.7 | 7.3 ± 0.2 |
+   | Frozen JEPA + linear probe (3 seeds) | **13.2 ± 1.4** | **11.5 ± 0.8** | 11.3 ± 1.0 | 11.3 ± 1.1 | 11.3 ± 1.1 |
+   | JEPA + fine-tune (seed 0) | 18.9 | 14.0 | 11.5 | **9.5** | — |
 
-   A linear probe fitted on 10 labelled episodes, on top of a world model learned from unlabelled
-   sound, forecasts 3.4× better than a network trained from scratch on those 10 episodes.
+   ![Label efficiency](paper/svg/fig_labels.svg)
 
-2. **Robustness to nuisance and regime shift.** Increasing nuisance at test time from λ = 0 to
-   λ = 3 raises the JEPA 2 s forecast error from 10.1 to 12.9 (+28 %). The classical pipeline goes
-   from 4.1 to 14.3 (+250 %), because its harmonic tracker locks onto distractor tones. On the
-   held-out dynamical regime (higher J and c₂) JEPA rises from 10.1 to 14.4, and the
-   structure-aware grey-box from 4.6 to 7.6.
+2. **Robustness to nuisance.** Raising test nuisance from λ = 0 to λ = 3 moves the JEPA 2 s
+   forecast from 10.7 to 13.4 (+25 %). The classical pipeline goes from 4.1 to 14.3 (+250 %),
+   because its harmonic tracker locks onto distractor tones. The reconstruction world model reaches
+   23.1. With 300 labels, JEPA + fine-tune holds 12.9 at λ = 3, while supervised training reaches 27.5.
 
-3. **Planning in latent space works.** CEM-MPC on the JEPA latent, using only the spectrogram,
-   tracks speed set-points close to the oracle. Excess tracking MSE over the oracle, with paired 95 %
-   bootstrap CIs over 40 episodes (rad²/s²):
+3. **Planning in latent space works.** CEM-MPC on the JEPA latent tracks speed set-points from the
+   spectrogram alone. This is the excess tracking MSE over an oracle controller (40 episodes,
+   rad²/s², paired 95 % bootstrap CIs, seed 0):
 
    | Controller | λ = 1 | λ = 3 |
    |---|---:|---:|
@@ -129,59 +132,76 @@ python tests/test_v2_physics.py
    | Tracker + grey-box (true ODE form) | 6.6 [2.9, 11.2] | 14.5 [4.6, 27.7] |
    | JEPA + fine-tune, 300 labels | 7.7 [3.7, 12.3] | 28.6 [19.2, 39.1] |
    | JEPA world model, 300-label probe | 7.9 [3.5, 12.9] | 38.6 [18.5, 69.9] |
+   | JEPA trained at λ = 2.5 | 13.5 | 32.0 |
    | Reconstruction world model, 300-label probe | 22.7 [9.2, 44.8] | 85.8 [29.2, 185.9] |
    | Supervised, 300 labels | 22.2 [16.4, 28.6] | 224 [120, 357] |
    | PI on tracked speed | 344 [258, 442] | 2444 [584, 5607] |
 
-   With 300 labels, JEPA pre-training cuts excess closed-loop error about 3× at λ = 1 and about 8×
-   at λ = 3.
+   With 300 labels, JEPA pre-training cuts excess closed-loop error 2.9× at λ = 1 and 7.8× at λ = 3.
+
+   ![Closed-loop excess error](paper/svg/fig_mpc.svg)
 
 4. **Control authority is now learned (the v1 failure mode).** The median relative error of the
-   2 s step-response gain ∂ω/∂u, computed through the latent rollout against simulator finite
-   differences, is 0.09 for JEPA, 0.20 for reconstruction, 0.04 for fully supervised and 0.03 for
-   the grey-box. v1's learned models were essentially control-insensitive.
+   2 s step-response gain ∂ω/∂u is 0.10 for JEPA, 0.26 for reconstruction, 0.04 for full supervision
+   and 0.03 for the grey-box. v1's learned models were control-insensitive.
 
-5. **JEPA against reconstruction.** Same architecture, data and budget; only the objective differs.
-   With 300 labels, JEPA gives 10.1 vs 17.3 for the 2 s forecast with a linear probe, and 9.0 vs
-   11.6 with an MLP probe. It is also more robust (12.9 vs 21.2 at λ = 3).
+5. **JEPA against reconstruction.** The architecture, data and budget are the same; only the
+   objective differs. With linear probes, JEPA gives 11.3 ± 1.1 against 18.2 ± 1.0 for the 2 s
+   forecast. With MLP probes the gap shrinks to 10.2 against 11.5. So much of the advantage is in how
+   the speed information is organised, not only in whether it is present.
 
 ### Where it does not win (stated plainly)
 
-* **In-distribution accuracy.** The classical pipeline, given the exact ODE form, is still better
-  in-distribution: 4.6 vs 9.5–10.1 for the 2 s forecast. Full supervision with 3000 labels reaches
-  7.3. JEPA's advantage is labels and robustness, not raw accuracy on the training distribution.
-* **Hidden parameters are only partly recovered.** Linear-probe R² from the latent at t = 2 s is
-  0.76 for the steady-state gain k_ω and 0.38 for the actuator lag τ_a. It is about 0 for J, ṁ
-  and the delay d. The latent captures state better than it identifies the machine.
-* **An explicit adaptive "machine embedding"** (a context encoder over observed transitions)
-  made things worse (16.1 vs 14.7, short-horizon setting). We report it as a negative result.
+* **In-distribution accuracy.** The classical pipeline, given the exact ODE form, forecasts with
+  4.6. Full supervision with 3000 labels reaches 7.3 ± 0.2. JEPA's advantage is labels and
+  robustness, not peak accuracy.
+* **Machine identification.** Linear-probe R² from the latent at t = 2 s is 0.76 for the
+  steady-state gain k_ω and 0.22 for the actuator lag τ_a. It is about 0 for the inertia J, the mass
+  flow ṁ and the delay d. The latent captures state better than it identifies the machine.
+* **Uncertainty.** A three-seed ensemble cuts error by about 9 % (10.3 against 11.3), but it is
+  over-confident. Only 64 % of errors fall within ±2σ, and spread and error correlate at only 0.28.
 
-### Ablations (seed 0, 2 s forecast, 300-label linear probe)
+### Second-round improvements (seed 0)
 
-| Variant | 2 s RMSE |
-|---|---:|
-| Main: two-stage JEPA, long-horizon training | 10.1 |
-| Short-horizon training (K = 64 on 2 s crops) | 14.7 |
-| No stage-1 pre-training (random frozen trunk) | 15.7 |
-| Adaptive context embedding | 16.1 |
+| Variant | In dist. | Held-out | λ = 3 | Verdict |
+|---|---:|---:|---:|---|
+| Main: long-horizon training (1.28 s rollouts) | 10.1 | 14.4 | 12.9 | largest single gain (was 14.7) |
+| Full-horizon rollouts (2 s on 4 s crops) | 11.5 | 14.8 | 14.0 | no further gain |
+| Nuisance-randomised pre-training (λ ~ U[0,3]) | 11.2 | 15.5 | 13.2 | filtering at λ = 3: 10.3 → **6.0** (MLP probe); forecasts barely move |
+| Hybrid: JEPA belief → grey-box ID of the true ODE | **7.0** | 11.0 | 16.4 | −30 % in distribution; worse at λ = 3 (sensor error amplified) |
+| No stage-1 pre-training (short horizon) | 15.7 | 16.1 | 20.1 | pre-training matters |
+| Adaptive context embedding (short horizon) | 16.1 | 19.1 | 18.9 | negative result |
+
+The pattern across these variants is consistent. Perception is no longer the bottleneck:
+randomisation made the speed estimate much more robust, but forecasts did not follow. Long-horizon
+error comes from incomplete machine identification. Physics dynamics help when perception is good
+and hurt when it is not.
+
+![JEPA perception + physics dynamics](paper/svg/fig_hybrid.svg)
 
 ### Failure modes found while building it
 
 * **Action shortcut.** A single-stage JEPA whose EMA target encoder also sees the commands
   collapses onto the command history (effective rank 2.6 of 48). Speed becomes unrecoverable.
-  VICReg regularisation did not fix this; observation-only targets did. Log:
-  `logs/diag_jepa.log`.
+  VICReg regularisation did not fix this; observation-only targets did.
+  ![Collapse](paper/svg/fig_collapse.svg)
 * **Read-out bottleneck.** A hand-built spatial-soft-argmax read-out that stage 1 never trains
   threw away the speed information: MLP probe 18.1 on the read-out vs 5.1 on the full trunk map.
 * **Rollout drift.** Probe-decoded rollouts diverged beyond the training horizon until a TD-MPC2
   latent-consistency term was added (applied to every method).
 * **Infeasible control task.** The first MPC task used set-point steps of up to 80 % of the
-  reachable band. Every controller, the oracle included, was saturation-limited, so the task
-  measured the actuator, not the model. It was replaced by moderate steps; the old results are
-  archived in `results/mpc_tracking_saturated_task_v0.csv`.
+  reachable band. Every controller, the oracle included, was saturation-limited, so it was
+  replaced. The archived results are in `results/mpc_tracking_saturated_task_v0.csv`.
+
+### Scope note
+
+The supervised and fine-tuned label-sweep runs for seeds 1–2, and a nuisance-randomised
+reconstruction control, were dropped for compute reasons. The GPU is shared with other local
+jobs; see `logs/scope_trim.txt`. Everything runs on one laptop RTX 3050 Ti (4 GB).
 
 ### Figures
 
-`figures/`: `fig_problem` (input spectrogram), `fig_horizon`, `fig_label_efficiency`,
-`fig_nuisance`, `fig_step_response`, `fig_param_probes`, `fig_mpc`, `fig_mpc_trace`,
-`fig_example_forecast`, and `jepa_v2_architecture` (TikZ). Each is written as both PDF and PNG.
+Every figure is a standalone TikZ/pgfplots file in [`paper/plots/`](paper/plots/). Each reads CSVs
+exported from `results/` and is built to PDF (paper), SVG (web) and PNG with
+`python paper/export_plot_data.py && python paper/build_figures.py`. The earlier matplotlib versions
+are in `figures/`.

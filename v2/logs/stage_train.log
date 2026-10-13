@@ -29,3 +29,8 @@
 [08:24:57] {"git_head": "5b3c2a172e0a75f13fd19c5118364dc9770b354e", "python": "3.12.13", "torch": "2.10.0+cu126", "device": "cuda", "gpu": "NVIDIA GeForce RTX 3050 Ti Laptop GPU", "timestamp": "2026-10-12T08:24:57", "agent": "Claude Code (claude-opus-5-5)"}
 [08:34:19] done jepa1_s2 in 562s
 [15:34:07] done jepa_long_s2 in 25187s
+[17:49:27] done recon_long_s2 in 8120s
+[19:18:31] done sup_all_long_s2 in 5344s
+[20:41:13] done jepa_xlong_s0 in 4962s
+[20:48:52] done jepa1_mix_s0 in 459s
+[07:04:08] done jepa_mix_long_s0 in 36916s

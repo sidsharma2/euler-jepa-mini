@@ -11,8 +11,13 @@
 > * Results and the plain-language summary: [`v2/README.md`](v2/README.md)
 > * Reproduce: `python v2/make_data.py && python v2/run_v2.py train && python v2/run_v2.py eval`
 >
-> Status: the final multi-seed runs are in progress. Figures and the paper are
-> regenerated from `v2/results/` and update when the runs finish.
+> **Headline (final, 2026-10-13).** With 10 labelled episodes, a frozen JEPA latent forecasts
+> 2 s ahead 3.1× better than supervised training from scratch (13.2 vs 40.6 rad/s). Its
+> forecast error grows 25 % under heavy acoustic nuisance, against 250 % for the classical
+> pipeline. Latent-space MPC with 300 labels has 2.9–7.8× lower excess tracking error than
+> supervised training with the same labels. The classical pipeline, given the true ODE, is still
+> the most accurate in distribution, and the latent identifies the hidden machine parameters only
+> partly. See [`v2/README.md`](v2/README.md).
 
 ![Label efficiency](v2/paper/svg/fig_labels.svg)
 
